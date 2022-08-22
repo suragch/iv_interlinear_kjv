@@ -1,10 +1,6 @@
-
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
 
 class HelpScreen extends StatefulWidget {
   @override
@@ -24,10 +20,9 @@ class HelpScreenState extends State<HelpScreen> {
       body: Padding(
         padding: const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
         child: WebView(
-          initialUrl: Uri.dataFromString(
-              htmlString,
-              mimeType: 'text/html',
-              encoding: Encoding.getByName('utf-8')).toString(),
+          initialUrl: Uri.dataFromString(htmlString,
+                  mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+              .toString(),
           //onWebViewCreated: (WebViewController webViewController) {
           //  _controller = webViewController;
           //},

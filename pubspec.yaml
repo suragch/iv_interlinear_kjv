@@ -1,19 +1,18 @@
 name: iv_interlinear_kjv
 description: Comparison of the Inspired Version, a Greek interlinear, and the King James Version.
-
 version: 2.0.0+10
 
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  path_provider: ^0.4.1
-  sqflite: ^1.0.0
-  package_info: ^0.4.0+2
-  webview_flutter: ^0.3.4
-  url_launcher: ^5.0.2
+  path_provider: ^2.0.11
+  sqflite: ^2.0.3+1
+  package_info: ^2.0.2
+  webview_flutter: ^3.0.4
+  url_launcher: ^6.1.5
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:iv_interlinear_kjv/compare_screen.dart';
@@ -68,7 +67,7 @@ class _HomepageBodyState extends State<HomepageBody> {
   String appVersionNumber = '';
   Version _character = Version.iv;
   int bookId = Book.FIRST_NT_BOOK;
-  String bookName;
+  String bookName = '';
   int chapterNumber = 1;
   bool isInspiredVersion = true;
 
@@ -176,9 +175,9 @@ class _HomepageBodyState extends State<HomepageBody> {
           title: const Text('Inspired Version'),
           value: Version.iv,
           groupValue: _character,
-          onChanged: (Version value) {
+          onChanged: (Version? value) {
             setState(() {
-              _character = value;
+              _character = value ?? Version.iv;
               isInspiredVersion = true;
             });
           },
@@ -187,9 +186,9 @@ class _HomepageBodyState extends State<HomepageBody> {
           title: const Text('Greek'),
           value: Version.interlinear,
           groupValue: _character,
-          onChanged: (Version value) {
+          onChanged: (Version? value) {
             setState(() {
-              _character = value;
+              _character = value ?? Version.interlinear;
               isInspiredVersion = false;
             });
           },
@@ -198,9 +197,9 @@ class _HomepageBodyState extends State<HomepageBody> {
           title: const Text('King James Version'),
           value: Version.kjv,
           groupValue: _character,
-          onChanged: (Version value) {
+          onChanged: (Version? value) {
             setState(() {
-              _character = value;
+              _character = value ?? Version.kjv;
               isInspiredVersion = false;
             });
           },
@@ -226,8 +225,8 @@ class _HomepageBodyState extends State<HomepageBody> {
       minimum: EdgeInsets.all(8.0),
       child: Text(
         'The Holy Bible, Berean Interlinear Bible\n'
-            'Copyright © 2016 by Bible Hub\n'
-            'Used by permission. All Rights Reserved Worldwide.',
+        'Copyright © 2016 by Bible Hub\n'
+        'Used by permission. All Rights Reserved Worldwide.',
         style: TextStyle(fontSize: 8.0),
       ),
     );
@@ -246,7 +245,7 @@ class _HomepageBodyState extends State<HomepageBody> {
   void _onBookClick(BuildContext context) {
     final books = Book.getBookListForTestament(Book.NEW_TESTAMENT);
     List<SimpleDialogOption> bookOptions =
-    List.generate(books.length, (int index) {
+        List.generate(books.length, (int index) {
       return SimpleDialogOption(
         child: Text(books[index]),
         onPressed: () {
@@ -316,20 +315,14 @@ class _HomepageBodyState extends State<HomepageBody> {
   }
 
   void _onCompareClick(BuildContext context) {
-
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => CompareScreen(
-            isInspiredVersion: isInspiredVersion,
-            bookId: bookId,
-            chapter: chapterNumber,
-          )),
+                isInspiredVersion: isInspiredVersion,
+                bookId: bookId,
+                chapter: chapterNumber,
+              )),
     );
   }
 }
-
-
-
-
-

@@ -7,8 +7,11 @@ class NarrowVerseListTile extends StatelessWidget {
   final int index;
   final List<VersesRow> verses;
 
-  const NarrowVerseListTile({Key key, this.index, this.verses})
-      : super(key: key);
+  const NarrowVerseListTile({
+    Key? key,
+    required this.index,
+    required this.verses,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +60,7 @@ class NarrowVerseListTile extends StatelessWidget {
             ),
             Padding(
               padding:
-              const EdgeInsets.only(left: 32.0, right: 10.0, bottom: 10.0),
+                  const EdgeInsets.only(left: 32.0, right: 10.0, bottom: 10.0),
               child: RichText(
                 text: TextSpan(
                   style: DefaultTextStyle.of(context).style,
@@ -76,7 +79,11 @@ class WideVerseListTile extends StatelessWidget {
   final int index;
   final List<VersesRow> verses;
 
-  const WideVerseListTile({Key key, this.index, this.verses}) : super(key: key);
+  const WideVerseListTile({
+    Key? key,
+    required this.index,
+    required this.verses,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +116,7 @@ class WideVerseListTile extends StatelessWidget {
           ),
           Padding(
             padding:
-            const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
+                const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
             child: RichText(
               text: TextSpan(
                 style: DefaultTextStyle.of(context).style,
@@ -135,7 +142,7 @@ class WideVerseListTile extends StatelessWidget {
           ),
           Padding(
             padding:
-            const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
+                const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
             child: RichText(
               text: TextSpan(
                 style: DefaultTextStyle.of(context).style,
@@ -161,7 +168,7 @@ class WideVerseListTile extends StatelessWidget {
           ),
           Padding(
             padding:
-            const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
+                const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
             child: RichText(
               text: TextSpan(
                 style: DefaultTextStyle.of(context).style,
@@ -175,16 +182,20 @@ class WideVerseListTile extends StatelessWidget {
   }
 }
 
-String _title(String version, String verseText, int chapter, int verse) {
-  String reference = '';
-  if (verseText != null) {
-    reference = ' ($chapter:$verse)';
+String _title(String version, String? verseText, int? chapter, int? verse) {
+  if (verseText == null || chapter == null || verse == null) {
+    return version;
   }
-  return '$version$reference';
+  return '$version ($chapter:$verse)';
 }
 
 String _ivTitle(VersesRow row) {
-  return _title('Inspired Version', row.ivText, row.ivChapter, row.ivVerse);
+  return _title(
+    'Inspired Version',
+    row.ivText,
+    row.ivChapter,
+    row.ivVerse,
+  );
 }
 
 List<TextSpan> _ivText(VersesRow row) {
@@ -195,8 +206,8 @@ String _originalTitle(VersesRow row) {
   return _title('Greek', row.kjvText, row.kjvChapter, row.kjvVerse);
 }
 
-List<TextSpan> _originalText(VersesRow row) {
-  String text = row.originalText;
+List<TextSpan> _originalText(VersesRow? row) {
+  String? text = row?.originalText;
   List<TextSpan> spans = [];
   if (text == null) {
     spans.add(TextSpan(text: '---'));
@@ -269,9 +280,10 @@ _openWordInBrowser(String greekWord) async {
     return;
   }
 
-  final url = 'http://biblehub.com/greek/$strongsNumber.htm';
-  if (await canLaunch(url)) {
-    await launch(url);
+  // final url = 'http://biblehub.com/greek/$strongsNumber.htm';
+  final url = Uri.parse('http://biblehub.com/greek/$strongsNumber.htm');
+  if (await canLaunchUrl(url)) {
+    await launchUrl(url);
   } else {
     return;
   }
@@ -297,7 +309,7 @@ List<TextSpan> _kjvText(VersesRow row) {
   return _text(row.kjvText);
 }
 
-List<TextSpan> _text(String verseText) {
+List<TextSpan> _text(String? verseText) {
   List<TextSpan> spans = [];
   if (verseText == null) {
     spans.add(TextSpan(text: '---'));

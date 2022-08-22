@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:iv_interlinear_kjv/book.dart';
 import 'package:iv_interlinear_kjv/database_helper.dart';
@@ -10,10 +9,10 @@ class CompareScreen extends StatefulWidget {
   final int chapter;
 
   CompareScreen({
-    Key key,
-    @required this.isInspiredVersion,
-    @required this.bookId,
-    @required this.chapter,
+    Key? key,
+    required this.isInspiredVersion,
+    required this.bookId,
+    required this.chapter,
   }) : super(key: key);
 
   @override

@@ -31,17 +31,17 @@ class DatabaseHelper {
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
 
-  static Database _database;
+  static Database? _database;
   Future<Database> get database async {
-    if (_database != null) return _database;
+    if (_database != null) return _database!;
     _database = await _initDatabase();
-    return _database;
+    return _database!;
   }
 
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
-    Database db;
+    Database? db;
     try {
       db = await openDatabase(path, readOnly: true);
     } catch (e) {
@@ -53,9 +53,10 @@ class DatabaseHelper {
       print("Creating new copy from asset");
 
       // Copy from asset
-      ByteData data = await rootBundle.load(join(_databaseFolder, _databaseName));
+      ByteData data =
+          await rootBundle.load(join(_databaseFolder, _databaseName));
       List<int> bytes =
-      data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(path).writeAsBytes(bytes);
 
       // open the database
@@ -75,7 +76,7 @@ class DatabaseHelper {
 
     List<String> columnsToSelect = [KEY_ID];
     String chapterColumn =
-    (isInspiredVersion) ? KEY_IV_CHAPTERID : KEY_KJV_CHAPTERID;
+        (isInspiredVersion) ? KEY_IV_CHAPTERID : KEY_KJV_CHAPTERID;
     String sortOrder = (isInspiredVersion)
         ? '$KEY_IV_CHAPTERID ASC, $KEY_IV_VERSEID ASC'
         : '$KEY_KJV_CHAPTERID ASC, $KEY_KJV_VERSEID ASC';
@@ -120,7 +121,7 @@ class DatabaseHelper {
     return returnList;
   }
 
-  Future<int> getStrongsNumber(String greekWord) async {
+  Future<int?> getStrongsNumber(String greekWord) async {
     Database db = await database;
 
     final columnsToSelect = [KEY_STRONGS_NUMBER];
@@ -132,7 +133,7 @@ class DatabaseHelper {
         whereArgs: whereArguments);
 
     if (result.length > 0) {
-      return result.first[KEY_STRONGS_NUMBER];
+      return result.first[KEY_STRONGS_NUMBER] as int;
     }
 
     return null;
@@ -140,35 +141,46 @@ class DatabaseHelper {
 }
 
 class VersesRow {
-  int id;
-  int bookId;
+  VersesRow({
+    required this.id,
+    required this.bookId,
+    required this.ivChapter,
+    required this.ivVerse,
+    required this.ivLine,
+    required this.ivText,
+    required this.kjvChapter,
+    required this.kjvVerse,
+    required this.kjvText,
+    required this.originalText,
+  });
 
-  int ivChapter;
-  int ivVerse;
-  int ivLine;
-  String ivText;
+  final int? id;
+  final int bookId;
 
-  int kjvChapter;
-  int kjvVerse;
-  String kjvText;
+  final int? ivChapter;
+  final int? ivVerse;
+  final int? ivLine;
+  final String? ivText;
 
-  String originalText;
+  final int? kjvChapter;
+  final int? kjvVerse;
+  final String? kjvText;
 
-  VersesRow();
+  final String? originalText;
 
-  VersesRow.fromMap(Map<String, dynamic> map) {
-    id = map[KEY_ID];
-    bookId = map[KEY_BOOKID];
-    ivChapter = map[KEY_IV_CHAPTERID];
-    ivVerse = map[KEY_IV_VERSEID];
-    ivLine = map[KEY_IV_LINEID];
-    ivText = map[KEY_IV_VERSETEXT];
-
-    kjvChapter = map[KEY_KJV_CHAPTERID];
-    kjvVerse = map[KEY_KJV_VERSEID];
-    kjvText = map[KEY_KJV_VERSETEXT];
-
-    originalText = map[KEY_ORIGINAL_VERSETEXT];
+  factory VersesRow.fromMap(Map<dynamic, dynamic> map) {
+    print(map);
+    return VersesRow(
+        id: map[KEY_ID],
+        bookId: map[KEY_BOOKID],
+        ivChapter: map[KEY_IV_CHAPTERID],
+        ivVerse: map[KEY_IV_VERSEID],
+        ivLine: map[KEY_IV_LINEID],
+        ivText: map[KEY_IV_VERSETEXT],
+        kjvChapter: map[KEY_KJV_CHAPTERID],
+        kjvVerse: map[KEY_KJV_VERSEID],
+        kjvText: map[KEY_KJV_VERSETEXT],
+        originalText: map[KEY_ORIGINAL_VERSETEXT]);
   }
 
   // convenience method to create a Map from this Word object
