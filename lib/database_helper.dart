@@ -1,32 +1,33 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 // Table names
-final String _tableVerses = "verses";
-final String _tableStrongsNumbers = "strongs_numbers";
+const String _tableVerses = "verses";
+const String _tableStrongsNumbers = "strongs_numbers";
 
 // Column names
-final String KEY_ID = "_id";
-final String KEY_BOOKID = "bookId";
-final String KEY_IV_CHAPTERID = "IVchapterId";
-final String KEY_IV_VERSEID = "IVverseId";
-final String KEY_IV_LINEID = "IVlineId";
-final String KEY_IV_VERSETEXT = "IVverseText";
-final String KEY_KJV_CHAPTERID = "KJVchapterId";
-final String KEY_KJV_VERSEID = "KJVverseId";
-final String KEY_KJV_VERSETEXT = "KJVverseText";
-final String KEY_ORIGINAL_VERSETEXT = "originalVerseText";
+const String keyId = "_id";
+const String keyBookId = "bookId";
+const String keyIvChapterId = "IVchapterId";
+const String keyIvVerseId = "IVverseId";
+const String keyIvLineId = "IVlineId";
+const String keyIvVerseText = "IVverseText";
+const String keyKjvChapterId = "KJVchapterId";
+const String keyKjvVerseId = "KJVverseId";
+const String keyKjvVerseText = "KJVverseText";
+const String keyOriginalVerseText = "originalVerseText";
 
-final String KEY_GREEK_WORD = "greek_word";
-final String KEY_STRONGS_NUMBER = "strongs_number";
+const String keyGreekWord = "greek_word";
+const String keyStrongsNumber = "strongs_number";
 
 class DatabaseHelper {
-  static final String _databaseFolder = 'assets';
-  static final String _databaseName = "text.db";
+  static const String _databaseFolder = 'assets';
+  static const String _databaseName = "text.db";
 
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
@@ -45,12 +46,16 @@ class DatabaseHelper {
     try {
       db = await openDatabase(path, readOnly: true);
     } catch (e) {
-      print("Error $e");
+      if (kDebugMode) {
+        print("Error $e");
+      }
     }
 
     if (db == null) {
       // Should happen only the first time you launch your application
-      print("Creating new copy from asset");
+      if (kDebugMode) {
+        print("Creating new copy from asset");
+      }
 
       // Copy from asset
       ByteData data =
@@ -62,7 +67,9 @@ class DatabaseHelper {
       // open the database
       db = await openDatabase(path, readOnly: true);
     } else {
-      print("Opening existing database");
+      if (kDebugMode) {
+        print("Opening existing database");
+      }
     }
 
     return db;
@@ -74,13 +81,13 @@ class DatabaseHelper {
       bool isInspiredVersion, int bookId, int chapter) async {
     Database db = await database;
 
-    List<String> columnsToSelect = [KEY_ID];
+    List<String> columnsToSelect = [keyId];
     String chapterColumn =
-        (isInspiredVersion) ? KEY_IV_CHAPTERID : KEY_KJV_CHAPTERID;
+        (isInspiredVersion) ? keyIvChapterId : keyKjvChapterId;
     String sortOrder = (isInspiredVersion)
-        ? '$KEY_IV_CHAPTERID ASC, $KEY_IV_VERSEID ASC'
-        : '$KEY_KJV_CHAPTERID ASC, $KEY_KJV_VERSEID ASC';
-    String whereString = '$KEY_BOOKID =? AND $chapterColumn =?';
+        ? '$keyIvChapterId ASC, $keyIvVerseId ASC'
+        : '$keyKjvChapterId ASC, $keyKjvVerseId ASC';
+    String whereString = '$keyBookId =? AND $chapterColumn =?';
     List<dynamic> whereArguments = [bookId, chapter];
     List<Map> result = await db.query(_tableVerses,
         columns: columnsToSelect,
@@ -88,8 +95,8 @@ class DatabaseHelper {
         whereArgs: whereArguments,
         orderBy: sortOrder);
 
-    int startId = result.first[KEY_ID];
-    int endId = result.last[KEY_ID];
+    int startId = result.first[keyId];
+    int endId = result.last[keyId];
 
     return _getIdRange(db, startId, endId);
   }
@@ -97,17 +104,17 @@ class DatabaseHelper {
   Future<List<VersesRow>> _getIdRange(
       Database db, int startId, int endId) async {
     List<String> columnsToSelect = [
-      KEY_BOOKID,
-      KEY_IV_CHAPTERID,
-      KEY_IV_VERSEID,
-      KEY_IV_LINEID,
-      KEY_IV_VERSETEXT,
-      KEY_KJV_CHAPTERID,
-      KEY_KJV_VERSEID,
-      KEY_KJV_VERSETEXT,
-      KEY_ORIGINAL_VERSETEXT,
+      keyBookId,
+      keyIvChapterId,
+      keyIvVerseId,
+      keyIvLineId,
+      keyIvVerseText,
+      keyKjvChapterId,
+      keyKjvVerseId,
+      keyKjvVerseText,
+      keyOriginalVerseText,
     ];
-    final whereString = '$KEY_ID >=? AND $KEY_ID <=?';
+    const whereString = '$keyId >=? AND $keyId <=?';
     final whereArguments = [startId, endId];
     final results = await db.query(_tableVerses,
         columns: columnsToSelect,
@@ -124,16 +131,16 @@ class DatabaseHelper {
   Future<int?> getStrongsNumber(String greekWord) async {
     Database db = await database;
 
-    final columnsToSelect = [KEY_STRONGS_NUMBER];
-    final whereString = '$KEY_GREEK_WORD = ?';
+    final columnsToSelect = [keyStrongsNumber];
+    const whereString = '$keyGreekWord = ?';
     final whereArguments = [greekWord];
     final result = await db.query(_tableStrongsNumbers,
         columns: columnsToSelect,
         where: whereString,
         whereArgs: whereArguments);
 
-    if (result.length > 0) {
-      return result.first[KEY_STRONGS_NUMBER] as int;
+    if (result.isNotEmpty) {
+      return result.first[keyStrongsNumber] as int;
     }
 
     return null;
@@ -169,35 +176,34 @@ class VersesRow {
   final String? originalText;
 
   factory VersesRow.fromMap(Map<dynamic, dynamic> map) {
-    print(map);
     return VersesRow(
-        id: map[KEY_ID],
-        bookId: map[KEY_BOOKID],
-        ivChapter: map[KEY_IV_CHAPTERID],
-        ivVerse: map[KEY_IV_VERSEID],
-        ivLine: map[KEY_IV_LINEID],
-        ivText: map[KEY_IV_VERSETEXT],
-        kjvChapter: map[KEY_KJV_CHAPTERID],
-        kjvVerse: map[KEY_KJV_VERSEID],
-        kjvText: map[KEY_KJV_VERSETEXT],
-        originalText: map[KEY_ORIGINAL_VERSETEXT]);
+        id: map[keyId],
+        bookId: map[keyBookId],
+        ivChapter: map[keyIvChapterId],
+        ivVerse: map[keyIvVerseId],
+        ivLine: map[keyIvLineId],
+        ivText: map[keyIvVerseText],
+        kjvChapter: map[keyKjvChapterId],
+        kjvVerse: map[keyKjvVerseId],
+        kjvText: map[keyKjvVerseText],
+        originalText: map[keyOriginalVerseText]);
   }
 
   // convenience method to create a Map from this Word object
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
-      KEY_BOOKID: bookId,
-      KEY_IV_CHAPTERID: ivChapter,
-      KEY_IV_VERSEID: ivVerse,
-      KEY_IV_LINEID: ivLine,
-      KEY_IV_VERSETEXT: ivText,
-      KEY_KJV_CHAPTERID: kjvChapter,
-      KEY_KJV_VERSEID: kjvVerse,
-      KEY_KJV_VERSETEXT: kjvText,
-      KEY_ORIGINAL_VERSETEXT: originalText
+      keyBookId: bookId,
+      keyIvChapterId: ivChapter,
+      keyIvVerseId: ivVerse,
+      keyIvLineId: ivLine,
+      keyIvVerseText: ivText,
+      keyKjvChapterId: kjvChapter,
+      keyKjvVerseId: kjvVerse,
+      keyKjvVerseText: kjvText,
+      keyOriginalVerseText: originalText
     };
     if (id != null) {
-      map[KEY_ID] = id;
+      map[keyId] = id;
     }
     return map;
   }

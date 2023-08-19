@@ -4,13 +4,13 @@ import 'package:iv_interlinear_kjv/compare_screen.dart';
 import 'package:iv_interlinear_kjv/help_screen.dart';
 
 import 'package:iv_interlinear_kjv/book.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
-//const String appVersion = '2.0.0';
-
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,42 +19,46 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       title: 'IV Interlinear KJV',
-      home: Homepage(),
+      home: const Homepage(),
     );
   }
 }
 
 class Homepage extends StatelessWidget {
+  const Homepage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('IV Interlinear KJV'),
+        title: const Text('IV Interlinear KJV'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.info_outline),
+            icon: const Icon(Icons.info_outline),
             onPressed: () {
               _navigateToHelpScreen(context);
             },
           ),
         ],
       ),
-      body: HomepageBody(),
+      body: const HomepageBody(),
     );
   }
 
   void _navigateToHelpScreen(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => HelpScreen()),
+      MaterialPageRoute(builder: (context) => const HelpScreen()),
     );
   }
 }
 
 // widget class
 class HomepageBody extends StatefulWidget {
+  const HomepageBody({Key? key}) : super(key: key);
+
   @override
-  _HomepageBodyState createState() => _HomepageBodyState();
+  State<HomepageBody> createState() => _HomepageBodyState();
 }
 
 enum Version {
@@ -66,7 +70,7 @@ enum Version {
 class _HomepageBodyState extends State<HomepageBody> {
   String appVersionNumber = '';
   Version _character = Version.iv;
-  int bookId = Book.FIRST_NT_BOOK;
+  int bookId = Book.firstNtBook;
   String bookName = '';
   int chapterNumber = 1;
   bool isInspiredVersion = true;
@@ -78,12 +82,9 @@ class _HomepageBodyState extends State<HomepageBody> {
   }
 
   void _getVersionNumber() async {
-    // FIXME iOS release version getting error:
-    // 'package_info/PackageInfoPlugin.h' file not found
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     setState(() {
       appVersionNumber = packageInfo.version;
-      //appVersionNumber = appVersion;
     });
   }
 
@@ -155,14 +156,14 @@ class _HomepageBodyState extends State<HomepageBody> {
           padding: const EdgeInsets.only(left: 16, top: 32, bottom: 16),
           child: Row(
             children: <Widget>[
-              RaisedButton(
+              ElevatedButton(
                 child: Text(bookName),
                 onPressed: () {
                   _onBookClick(context);
                 },
               ),
-              SizedBox(width: 16),
-              RaisedButton(
+              const SizedBox(width: 16),
+              ElevatedButton(
                 child: Text('$chapterNumber'),
                 onPressed: () {
                   _onChapterClick(context);
@@ -211,8 +212,8 @@ class _HomepageBodyState extends State<HomepageBody> {
   Widget _compareButton() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: RaisedButton(
-        child: Text('Compare'),
+      child: ElevatedButton(
+        child: const Text('Compare'),
         onPressed: () {
           _onCompareClick(context);
         },
@@ -221,7 +222,7 @@ class _HomepageBodyState extends State<HomepageBody> {
   }
 
   Widget _copyrightInfo() {
-    return SafeArea(
+    return const SafeArea(
       minimum: EdgeInsets.all(8.0),
       child: Text(
         'The Holy Bible, Berean Interlinear Bible\n'
@@ -237,20 +238,23 @@ class _HomepageBodyState extends State<HomepageBody> {
       minimum: const EdgeInsets.all(8.0),
       child: Text(
         appVersionNumber,
-        style: TextStyle(fontSize: 8.0),
+        style: const TextStyle(fontSize: 8.0),
       ),
     );
   }
 
   void _onBookClick(BuildContext context) {
-    final books = Book.getBookListForTestament(Book.NEW_TESTAMENT);
+    final books = Book.getBookListForTestament(Book.newTestament);
     List<SimpleDialogOption> bookOptions =
         List.generate(books.length, (int index) {
       return SimpleDialogOption(
         child: Text(books[index]),
         onPressed: () {
           setState(() {
-            bookId = Book.getBookId(Book.NEW_TESTAMENT, index);
+            bookId = Book.getBookId(Book.newTestament, index);
+            if (Book.getNumberOfChapters(bookId) < chapterNumber) {
+              chapterNumber = 1;
+            }
           });
 
           Navigator.of(context).pop();
@@ -298,8 +302,8 @@ class _HomepageBodyState extends State<HomepageBody> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Choose a chapter"),
-      content: Container(
+      title: const Text("Choose a chapter"),
+      content: SizedBox(
         width: MediaQuery.of(context).size.width * 0.7,
         child: content,
       ),

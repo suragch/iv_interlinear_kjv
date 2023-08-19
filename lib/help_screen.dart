@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class HelpScreen extends StatefulWidget {
+  const HelpScreen({Key? key}) : super(key: key);
+
   @override
   HelpScreenState createState() {
     return HelpScreenState();
@@ -10,42 +12,25 @@ class HelpScreen extends StatefulWidget {
 }
 
 class HelpScreenState extends State<HelpScreen> {
-  //WebViewController _controller;
-
   @override
   Widget build(BuildContext context) {
-    //_loadHtmlFromAssets();
     return Scaffold(
-      appBar: AppBar(title: Text('IV Interlinear KJV')),
+      appBar: AppBar(title: const Text('IV Interlinear KJV')),
       body: Padding(
         padding: const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
         child: WebView(
           initialUrl: Uri.dataFromString(htmlString,
                   mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
               .toString(),
-          //onWebViewCreated: (WebViewController webViewController) {
-          //  _controller = webViewController;
-          //},
         ),
       ),
     );
   }
-
-// FIXME error loading from Android
-//  _loadHtmlFromAssets() async {
-//    String fileText = await rootBundle.loadString('assets/intro.html');
-//    print('found file: $fileText');
-//    _controller.loadUrl( Uri.dataFromString(
-//        fileText,
-//        mimeType: 'text/html',
-//        encoding: Encoding.getByName('utf-8')
-//    ).toString());
-//  }
 }
 
 // I was getting errors in Android trying to load the following text
 // from the assets file, so I am just putting it here.
-final String htmlString = '''
+const String htmlString = '''
 <html><body >
 <h3 style="text-align: center;">Comparison of Inspired Version</h3>
 <h3 style="text-align: center;">with the King James Version</h3>
@@ -74,7 +59,7 @@ final String htmlString = '''
 <p><strong>Was the King James Version based on a reliable Greek text?</strong></p>
 <p>Erasmus created an edition of the Greek New Testament which was based on only six manuscripts. The best of those manuscripts Erasmus did not rely on much. Later Erasmus consulted a few additional manuscripts and made only minor changes. He included I John 5:7-8 which had no Greek support. Erasmus&rsquo; Greek edition became the basis for other Greek editions, eventually evolving into the Textus Receptus (T.R.). J. Harold Greenlee had this to say about the Textus Receptus,²² &ldquo;The T.R. is not a &lsquo;bad&rsquo; or misleading text, whether theologically or practically. Technically, however, it is far from the original text.&rdquo;²³ The King James was based on the Textus Receptus.²⁴</p>
 <p><strong>What resources were used in the Inspired Version, the KJV, and The Berean Interlinear Bible)?</strong></p>
-<p>The Inspired Version was downloaded from <a href="http://www.centerplace.org/hs/iv/">http://www.centerplace.org/hs/iv/</a>. The King James Version was downloaded from <a href="http://spreadsheetpage.com/index.php/file/king_james_bible/">http://spreadsheetpage.com/index.php/file/king_james_bible/</a> The Berean Interlinear Bible was downloaded from <a href="http://berean.bible/downloads.htm">http://berean.bible/downloads.htm</a>. Software, for noting the differences between the Inspired Version and the King James Version, was downloaded from <a href="https://www.diffchecker.com/diff">https://www.diffchecker.com/diff</a>. A hard copy of the Inspired Version was used to check for any differences in the downloaded Inspired Version. For each adjustment deference was given to the hard copy. A hard copy of the King James Bible was used to check for any differences in the downloaded King James Version. Again deference was given to the hard copy.</p>
+<p>The Inspired Version was downloaded from <a href="http://www.centerplace.org/hs/iv/">http://www.centerplace.org/hs/iv/</a>. The King James Version can be retrieved from <a href="https://www.kingjamesbibleonline.org/">https://www.kingjamesbibleonline.org</a> The Berean Interlinear Bible was downloaded from <a href="http://berean.bible/downloads.htm">http://berean.bible/downloads.htm</a>. Software, for noting the differences between the Inspired Version and the King James Version, was downloaded from <a href="https://www.diffchecker.com/diff">https://www.diffchecker.com/diff</a>. A hard copy of the Inspired Version was used to check for any differences in the downloaded Inspired Version. For each adjustment deference was given to the hard copy. A hard copy of the King James Bible was used to check for any differences in the downloaded King James Version. Again deference was given to the hard copy.</p>
 <p><strong>Were there any changes to the three Scriptural documents? </strong></p>
 <p>The Berean Interlinear Bible had Jesus&rsquo; words in red. It made it hard to read and the original Greek did not differentiate Jesus&rsquo; words in a different color. Jesus&rsquo; words were changed to a black font. Titles to portions of scripture passages were removed. The Interlinear has translated the Greek words into English words. The English words are hyperlinked to a web site for further understanding of the translation There are sixteen and one-half verses that were left blank in the Berean Interlinear Bible for lack of manuscript support (Mt. 6:13b, Mt. 17:21, Mt. 18:11, Mt. 23:14, Mk. 7:16, Mk. 9:44, Mk. 9:46, Mk. 11:26, Mk. 15:28, Lk. 17:36, Lk. 23:17, Jn. 5:4, Acts 8:37, Acts 8:37, Acts 15:34, Acts 24:7, Acts 28:29, and Rm. 16:24). Greek text was found in the footnotes in the Interlinear, but without any words of English equivalent. The Greek and English translation were added into the text itself. Because the passages are questionable, there are no hyperlinks to a web site. All footnotes were removed. No other changes were made to The Berean Interlinear Bible.</p>
 <p>The downloaded King James Version was easier to format being in an Excel format. The drawback was what appeared to be in a British format using words like colour instead of color or theatre instead of theater. When there was a spelling difference between the Inspired Version and the King James Version, an American edition paper copy of the King James was consulted. Quite often the spelling would conform to what was in the Inspired Version. Joseph Smith had in all likelihood an American edition of the King James Version. The chapter and verse numbers were added to each verse to the downloaded version. Highlighting of words was also done. No other changes were made to the King James Version.</p>

@@ -1,34 +1,34 @@
 class Book {
-  static final String TESTAMENT_ID_KEY = "testament";
-  static final String BOOK_ID_KEY = "bookId";
-  static final String CHAPTER_NUMBER_KEY = "chapter";
+  static const String testamentIdKey = "testament";
+  static const String bookIdKey = "bookId";
+  static const String chapterNumberKey = "chapter";
 
-  static final int OLD_TESTAMENT = 0;
-  static final int NEW_TESTAMENT = 1;
+  static const int oldTestament = 0;
+  static const int newTestament = 1;
 
-  static final int SEARCH_OT = 100;
-  static final int SEARCH_NT = 101;
-  static final int SEARCH_ALL = 102;
-  static final int SEARCH_CURRENT = 103;
+  static const int searchOT = 100;
+  static const int searchNT = 101;
+  static const int searchAll = 102;
+  static const int searchCurrent = 103;
 
-  static final int GENESIS = 1;
-  static final int OBADIAH = 31;
-  static final int PHILEMON = 58;
-  static final int IIJOHN = 64;
-  static final int IIIJOHN = 65;
-  static final int JUDE = 66;
-  static final int REVELATION = 67;
+  static const int genesis = 1;
+  static const int obadiah = 31;
+  static const int philemon = 58;
+  static const int iiJohn = 64;
+  static const int iiiJohn = 65;
+  static const int jude = 66;
+  static const int revelation = 67;
 
-  static final int NUMBER_OF_CHAPTERS_IN_REVELATION = 22;
-  static final int NUMBER_OF_CHAPTERS_IN_BIBLE = 1189;
-  static final int NUMBER_OF_CHAPTERS_IN_OT = 929;
+  static const int numberOfChaptersInRevelation = 22;
+  static const int numberOfChaptersInBible = 1189;
+  static const int numberOfChaptersInOT = 929;
 
-  static final int FIRST_OT_BOOK = 1;
-  static final int LAST_OT_BOOK = 39;
-  static final int FIRST_NT_BOOK = 41;
-  static final int LAST_NT_BOOK = 67;
+  static const int firstOtBook = 1;
+  static const int lastOtBook = 39;
+  static const int firstNtBook = 41;
+  static const int lastNtBook = 67;
 
-  static final _OT_CHAPTERS_PER_BOOK = [
+  static const _otChaptersPerBook = [
     50,
     40,
     27,
@@ -69,7 +69,7 @@ class Book {
     14,
     4
   ];
-  static final _NT_CHAPTERS_PER_BOOK = [
+  static const _ntChaptersPerBook = [
     28,
     16,
     24,
@@ -99,7 +99,7 @@ class Book {
     22
   ];
 
-  static final _OT_BOOK_NAMES = [
+  static const _otBookNames = [
     "Genesis",
     "Exodus",
     "Leviticus",
@@ -141,7 +141,7 @@ class Book {
     "Malachi"
   ];
 
-  static final _NT_BOOK_NAMES = [
+  static const _ntBookNames = [
     "Matthew",
     "Mark",
     "Luke",
@@ -173,81 +173,81 @@ class Book {
 
   static String getBookName(int bookId) {
     if (isOtBookId(bookId)) {
-      return _OT_BOOK_NAMES[bookId - FIRST_OT_BOOK];
+      return _otBookNames[bookId - firstOtBook];
     } else if (isNtBookId(bookId)) {
-      return _NT_BOOK_NAMES[bookId - FIRST_NT_BOOK];
+      return _ntBookNames[bookId - firstNtBook];
     }
     throw ArgumentError("not a valid BookId");
   }
 
   static int getNumberOfChapters(int bookId) {
     if (isOtBookId(bookId)) {
-      return _OT_CHAPTERS_PER_BOOK[bookId - FIRST_OT_BOOK];
+      return _otChaptersPerBook[bookId - firstOtBook];
     } else if (isNtBookId(bookId)) {
-      return _NT_CHAPTERS_PER_BOOK[bookId - FIRST_NT_BOOK];
+      return _ntChaptersPerBook[bookId - firstNtBook];
     }
     throw ArgumentError("not a valid BookId");
   }
 
   static bool isOtBookId(int id) {
-    return id >= FIRST_OT_BOOK && id <= LAST_OT_BOOK;
+    return id >= firstOtBook && id <= lastOtBook;
   }
 
   static bool isNtBookId(int id) {
-    return id >= FIRST_NT_BOOK && id <= LAST_NT_BOOK;
+    return id >= firstNtBook && id <= lastNtBook;
   }
 
   static bool isSingleChapterBook(int bookId) {
-    return bookId == OBADIAH ||
-        bookId == PHILEMON ||
-        bookId == IIJOHN ||
-        bookId == IIIJOHN ||
-        bookId == JUDE;
+    return bookId == obadiah ||
+        bookId == philemon ||
+        bookId == iiJohn ||
+        bookId == iiiJohn ||
+        bookId == jude;
   }
 
   static List<String> getBookList() {
-    return List.from(_OT_BOOK_NAMES)..addAll(_NT_BOOK_NAMES);
+    return List.from(_otBookNames)..addAll(_ntBookNames);
   }
 
   static List<String> getBookListForTestament(int testamentId) {
-    if (testamentId == OLD_TESTAMENT) return _OT_BOOK_NAMES;
-    return _NT_BOOK_NAMES;
+    if (testamentId == oldTestament) return _otBookNames;
+    return _ntBookNames;
   }
 
   static int getBookId(int testament, int index) {
-    if (testament == OLD_TESTAMENT) {
-      return index + FIRST_OT_BOOK;
+    if (testament == oldTestament) {
+      return index + firstOtBook;
     }
-    return index + FIRST_NT_BOOK;
+    return index + firstNtBook;
   }
 
   static Chapter getBookAndChapter(int chapterIndexInBible) {
-    if (chapterIndexInBible < 0) return new Chapter(GENESIS, 1);
+    if (chapterIndexInBible < 0) return Chapter(genesis, 1);
 
     int bookId;
     int sum;
     List<int> chaptersPerBook;
 
-    if (chapterIndexInBible < NUMBER_OF_CHAPTERS_IN_OT) {
-      bookId = FIRST_OT_BOOK;
+    if (chapterIndexInBible < numberOfChaptersInOT) {
+      bookId = firstOtBook;
       sum = 0;
-      chaptersPerBook = _OT_CHAPTERS_PER_BOOK;
+      chaptersPerBook = _otChaptersPerBook;
     } else {
-      bookId = FIRST_NT_BOOK;
-      sum = NUMBER_OF_CHAPTERS_IN_OT;
-      chaptersPerBook = _NT_CHAPTERS_PER_BOOK;
+      bookId = firstNtBook;
+      sum = numberOfChaptersInOT;
+      chaptersPerBook = _ntChaptersPerBook;
     }
 
     for (int numChapters in chaptersPerBook) {
       if (chapterIndexInBible < sum + numChapters) {
         int chapter = chapterIndexInBible - sum + 1;
-        return new Chapter(bookId, chapter);
+        return Chapter(bookId, chapter);
       }
       sum += numChapters;
       bookId++;
     }
 
-    return new Chapter(REVELATION, NUMBER_OF_CHAPTERS_IN_REVELATION);
+    return Chapter(revelation, numberOfChaptersInRevelation);
   }
 
   static int getChapterIndexInBible(int bookId, int chapter) {
@@ -256,13 +256,13 @@ class Book {
     List<int> chaptersPerBook;
     int endBookIndex;
 
-    if (bookId < FIRST_NT_BOOK) {
+    if (bookId < firstNtBook) {
       endBookIndex = bookId - 1;
-      chaptersPerBook = _OT_CHAPTERS_PER_BOOK;
+      chaptersPerBook = _otChaptersPerBook;
     } else {
-      endBookIndex = bookId - FIRST_NT_BOOK;
-      chapterIndex += NUMBER_OF_CHAPTERS_IN_OT;
-      chaptersPerBook = _NT_CHAPTERS_PER_BOOK;
+      endBookIndex = bookId - firstNtBook;
+      chapterIndex += numberOfChaptersInOT;
+      chaptersPerBook = _ntChaptersPerBook;
     }
 
     for (int i = 0; i < endBookIndex; i++) {
@@ -273,16 +273,16 @@ class Book {
   }
 
   static int getNextBook(int bookId) {
-    if (bookId < GENESIS) return GENESIS;
-    if (bookId == LAST_OT_BOOK) return FIRST_NT_BOOK;
-    if (bookId >= REVELATION) throw ArgumentError('Index out of bounds');
+    if (bookId < genesis) return genesis;
+    if (bookId == lastOtBook) return firstNtBook;
+    if (bookId >= revelation) throw ArgumentError('Index out of bounds');
     return bookId + 1;
   }
 
   static int getPreviousBook(int bookId) {
-    if (bookId > REVELATION) return REVELATION;
-    if (bookId == FIRST_NT_BOOK) return LAST_OT_BOOK;
-    if (bookId <= GENESIS) throw ArgumentError('Index out of bounds');
+    if (bookId > revelation) return revelation;
+    if (bookId == firstNtBook) return lastOtBook;
+    if (bookId <= genesis) throw ArgumentError('Index out of bounds');
     return bookId - 1;
   }
 

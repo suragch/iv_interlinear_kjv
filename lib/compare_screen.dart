@@ -8,7 +8,7 @@ class CompareScreen extends StatefulWidget {
   final int bookId;
   final int chapter;
 
-  CompareScreen({
+  const CompareScreen({
     Key? key,
     required this.isInspiredVersion,
     required this.bookId,

@@ -210,7 +210,7 @@ List<TextSpan> _originalText(VersesRow? row) {
   String? text = row?.originalText;
   List<TextSpan> spans = [];
   if (text == null) {
-    spans.add(TextSpan(text: '---'));
+    spans.add(const TextSpan(text: '---'));
     return spans;
   }
 
@@ -237,10 +237,9 @@ List<TextSpan> _originalText(VersesRow? row) {
         text: spanText,
         recognizer: TapGestureRecognizer()
           ..onTap = () {
-            print(spanText);
             _openWordInBrowser(spanText);
           },
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.blue,
           decoration: TextDecoration.underline,
           decorationColor: Colors.blue,
@@ -312,12 +311,12 @@ List<TextSpan> _kjvText(VersesRow row) {
 List<TextSpan> _text(String? verseText) {
   List<TextSpan> spans = [];
   if (verseText == null) {
-    spans.add(TextSpan(text: '---'));
+    spans.add(const TextSpan(text: '---'));
     return spans;
   }
 
-  final boldStart = '<b>';
-  final boldEnd = r'</b>';
+  const boldStart = '<b>';
+  const boldEnd = r'</b>';
   int startIndex = 0;
   int endIndex = 0;
   int breakIndex = 0;
@@ -338,7 +337,7 @@ List<TextSpan> _text(String? verseText) {
     startIndex += boldStart.length;
     spans.add(TextSpan(
         text: verseText.substring(startIndex, endIndex),
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.bold,
           decoration: TextDecoration.underline,
         )));
