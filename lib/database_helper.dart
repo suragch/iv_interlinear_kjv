@@ -39,7 +39,7 @@ class DatabaseHelper {
     return _database!;
   }
 
-  _initDatabase() async {
+  Future<Database> _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
     Database? db;
@@ -89,14 +89,16 @@ class DatabaseHelper {
         : '$keyKjvChapterId ASC, $keyKjvVerseId ASC';
     String whereString = '$keyBookId =? AND $chapterColumn =?';
     List<dynamic> whereArguments = [bookId, chapter];
-    List<Map> result = await db.query(_tableVerses,
-        columns: columnsToSelect,
-        where: whereString,
-        whereArgs: whereArguments,
-        orderBy: sortOrder);
+    final result = await db.query(
+      _tableVerses,
+      columns: columnsToSelect,
+      where: whereString,
+      whereArgs: whereArguments,
+      orderBy: sortOrder,
+    );
 
-    int startId = result.first[keyId];
-    int endId = result.last[keyId];
+    final startId = result.first[keyId] as int;
+    final endId = result.last[keyId] as int;
 
     return _getIdRange(db, startId, endId);
   }
@@ -122,7 +124,7 @@ class DatabaseHelper {
         whereArgs: whereArguments);
 
     List<VersesRow> returnList = [];
-    for (Map map in results) {
+    for (final map in results) {
       returnList.add(VersesRow.fromMap(map));
     }
     return returnList;
@@ -177,16 +179,17 @@ class VersesRow {
 
   factory VersesRow.fromMap(Map<dynamic, dynamic> map) {
     return VersesRow(
-        id: map[keyId],
-        bookId: map[keyBookId],
-        ivChapter: map[keyIvChapterId],
-        ivVerse: map[keyIvVerseId],
-        ivLine: map[keyIvLineId],
-        ivText: map[keyIvVerseText],
-        kjvChapter: map[keyKjvChapterId],
-        kjvVerse: map[keyKjvVerseId],
-        kjvText: map[keyKjvVerseText],
-        originalText: map[keyOriginalVerseText]);
+      id: map[keyId] as int?,
+      bookId: map[keyBookId] as int,
+      ivChapter: map[keyIvChapterId] as int?,
+      ivVerse: map[keyIvVerseId] as int?,
+      ivLine: map[keyIvLineId] as int?,
+      ivText: map[keyIvVerseText] as String?,
+      kjvChapter: map[keyKjvChapterId] as int?,
+      kjvVerse: map[keyKjvVerseId] as int?,
+      kjvText: map[keyKjvVerseText] as String?,
+      originalText: map[keyOriginalVerseText] as String?,
+    );
   }
 
   // convenience method to create a Map from this Word object

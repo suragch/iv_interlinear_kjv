@@ -273,14 +273,13 @@ int _indexOfGreekEnd(String text, int fromIndex) {
 }
 
 _openWordInBrowser(String greekWord) async {
-  DatabaseHelper helper = DatabaseHelper.instance;
+  final helper = DatabaseHelper.instance;
   final strongsNumber = await helper.getStrongsNumber(greekWord);
   if (strongsNumber == null) {
     return;
   }
 
-  // final url = 'http://biblehub.com/greek/$strongsNumber.htm';
-  final url = Uri.parse('http://biblehub.com/greek/$strongsNumber.htm');
+  final url = Uri.parse('https://biblehub.com/greek/$strongsNumber.htm');
   if (await canLaunchUrl(url)) {
     await launchUrl(url);
   } else {

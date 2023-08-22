@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
 import 'package:iv_interlinear_kjv/compare_screen.dart';
+import 'package:iv_interlinear_kjv/database_helper.dart';
 import 'package:iv_interlinear_kjv/help_screen.dart';
 
 import 'package:iv_interlinear_kjv/book.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-void main() => runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseHelper.instance.database;
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -16,7 +21,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        useMaterial3: true,
+        colorSchemeSeed: Colors.green,
       ),
       title: 'IV Interlinear KJV',
       home: const Homepage(),
@@ -284,7 +290,6 @@ class _HomepageBodyState extends State<HomepageBody> {
         children: List<Widget>.generate(numberOfChapters, (index) {
           return GridTile(
             child: Card(
-              color: Colors.grey[300],
               child: InkResponse(
                 child: Center(
                   child: Text('${index + 1}'),

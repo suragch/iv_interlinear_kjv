@@ -1,28 +1,28 @@
 name: iv_interlinear_kjv
 description: Comparison of the Inspired Version, a Greek interlinear, and the King James Version.
 # Also update version in app code for homepage because the package_info_plus plugin isn't working on iOS
-version: 2.1.0+11
+version: 2.2.0+12
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ^3.0.0
 
 dependencies:
   flutter:
     sdk: flutter
-  path_provider: ^2.0.11
-  sqflite: ^2.0.3+1
-  package_info_plus: ^1.4.3+1
-  webview_flutter: ^3.0.4
-  url_launcher: ^6.1.5
-  path: ^1.8.1
+  path_provider: ^2.1.0
+  sqflite: ^2.3.0
+  package_info_plus: ^4.1.0
+  webview_flutter: ^4.2.2
+  url_launcher: ^6.1.12
+  path: ^1.8.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: any
+  flutter_lints: ^2.0.2
 
 flutter:
   uses-material-design: true
   assets:
-  - assets/intro.html
-  - assets/text.db
+    - assets/intro.html
+    - assets/text.db
