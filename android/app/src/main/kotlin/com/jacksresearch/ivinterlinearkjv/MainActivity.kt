@@ -1,4 +1,4 @@
-package com.example.iv_interlinear_kjv
+package com.jacksresearch.ivinterlinearkjv
 
 import io.flutter.embedding.android.FlutterActivity
 
