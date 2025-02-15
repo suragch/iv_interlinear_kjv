@@ -8,10 +8,10 @@ class NarrowVerseListTile extends StatelessWidget {
   final List<VersesRow> verses;
 
   const NarrowVerseListTile({
-    Key? key,
+    super.key,
     required this.index,
     required this.verses,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +59,7 @@ class NarrowVerseListTile extends StatelessWidget {
               ),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.only(left: 32.0, right: 10.0, bottom: 10.0),
+              padding: const EdgeInsets.only(left: 32.0, right: 10.0, bottom: 10.0),
               child: RichText(
                 text: TextSpan(
                   style: DefaultTextStyle.of(context).style,
@@ -80,10 +79,10 @@ class WideVerseListTile extends StatelessWidget {
   final List<VersesRow> verses;
 
   const WideVerseListTile({
-    Key? key,
+    super.key,
     required this.index,
     required this.verses,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -115,8 +114,7 @@ class WideVerseListTile extends StatelessWidget {
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
+            padding: const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
             child: RichText(
               text: TextSpan(
                 style: DefaultTextStyle.of(context).style,
@@ -141,8 +139,7 @@ class WideVerseListTile extends StatelessWidget {
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
+            padding: const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
             child: RichText(
               text: TextSpan(
                 style: DefaultTextStyle.of(context).style,
@@ -167,8 +164,7 @@ class WideVerseListTile extends StatelessWidget {
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
+            padding: const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
             child: RichText(
               text: TextSpan(
                 style: DefaultTextStyle.of(context).style,
@@ -294,13 +290,11 @@ const _greekExtendedMax = 0x1fff;
 
 bool _isGreek(String char) {
   final c = char.codeUnitAt(0);
-  return ((c >= _greekMin && c <= _greekMax) ||
-      (c >= _greekExtendedMin && c <= _greekExtendedMax));
+  return ((c >= _greekMin && c <= _greekMax) || (c >= _greekExtendedMin && c <= _greekExtendedMax));
 }
 
 String _kjvTitle(VersesRow row) {
-  return _title(
-      'King James Version', row.kjvText, row.kjvChapter, row.kjvVerse);
+  return _title('King James Version', row.kjvText, row.kjvChapter, row.kjvVerse);
 }
 
 List<TextSpan> _kjvText(VersesRow row) {

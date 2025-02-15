@@ -14,7 +14,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
 }
 
 class Homepage extends StatelessWidget {
-  const Homepage({Key? key}) : super(key: key);
+  const Homepage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class Homepage extends StatelessWidget {
 
 // widget class
 class HomepageBody extends StatefulWidget {
-  const HomepageBody({Key? key}) : super(key: key);
+  const HomepageBody({super.key});
 
   @override
   State<HomepageBody> createState() => _HomepageBodyState();
@@ -251,8 +251,7 @@ class _HomepageBodyState extends State<HomepageBody> {
 
   void _onBookClick(BuildContext context) {
     final books = Book.getBookListForTestament(Book.newTestament);
-    List<SimpleDialogOption> bookOptions =
-        List.generate(books.length, (int index) {
+    List<SimpleDialogOption> bookOptions = List.generate(books.length, (int index) {
       return SimpleDialogOption(
         child: Text(books[index]),
         onPressed: () {

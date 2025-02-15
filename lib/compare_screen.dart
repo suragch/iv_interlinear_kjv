@@ -9,11 +9,11 @@ class CompareScreen extends StatefulWidget {
   final int chapter;
 
   const CompareScreen({
-    Key? key,
+    super.key,
     required this.isInspiredVersion,
     required this.bookId,
     required this.chapter,
-  }) : super(key: key);
+  });
 
   @override
   CompareScreenState createState() {
