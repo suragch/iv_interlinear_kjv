@@ -1,0 +1,17 @@
+name: database_creator
+description: A sample command-line application.
+version: 1.0.0
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: ^3.7.2
+
+# Add regular dependencies here.
+dependencies:
+  html: ^0.15.6
+  csv: ^6.0.0
+
+
+dev_dependencies:
+  lints: ^5.0.0
+  test: ^1.24.0
