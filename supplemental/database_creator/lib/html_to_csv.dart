@@ -3,15 +3,17 @@ import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart';
 import 'package:csv/csv.dart';
 
-class ScriptureInfo {
-  String? chapterId;
-  String? verseId;
-  String? text;
+Future<void> convertOtHtmlToCsv() async {
+  await Directory('../original_docs/csv').create(recursive: true);
 
-  ScriptureInfo({this.chapterId, this.verseId, this.text});
+  for (int i = 1; i <= 39; i++) {
+    final inputFile = '../original_docs/html/$i.html';
+    final outputFile = '../original_docs/csv/$i.csv';
+    await _convertHtmlToCsv(inputFile, outputFile, i);
+  }
 }
 
-Future<void> convertHtmlToCsv(String inputPath, String outputPath, int bookId) async {
+Future<void> _convertHtmlToCsv(String inputPath, String outputPath, int bookId) async {
   final inputFile = File(inputPath);
   final outputFile = File(outputPath);
 
@@ -79,6 +81,14 @@ Future<void> convertHtmlToCsv(String inputPath, String outputPath, int bookId) a
   String csv = const ListToCsvConverter().convert(csvData);
   await outputFile.writeAsString(csv);
   print('CSV data saved to ${outputFile.path}');
+}
+
+class ScriptureInfo {
+  String? chapterId;
+  String? verseId;
+  String? text;
+
+  ScriptureInfo({this.chapterId, this.verseId, this.text});
 }
 
 ScriptureInfo _parseCellForSingleVerse(Element? cell) {
