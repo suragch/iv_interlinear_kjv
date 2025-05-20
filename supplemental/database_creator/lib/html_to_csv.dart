@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:html/parser.dart' show parse;
 import 'package:html/dom.dart';
-import 'package:csv/csv.dart';
+// import 'package:csv/csv.dart';
 
 Future<void> convertOtHtmlToCsv() async {
   await Directory('../original_docs/csv').create(recursive: true);
@@ -78,9 +78,23 @@ Future<void> _convertHtmlToCsv(String inputPath, String outputPath, int bookId) 
     }
   }
 
-  String csv = const ListToCsvConverter().convert(csvData);
+  final csv = _prepareCvsFile(csvData);
   await outputFile.writeAsString(csv);
   print('CSV data saved to ${outputFile.path}');
+}
+
+String _prepareCvsFile(List<List<dynamic>> cvsData) {
+  final text = StringBuffer();
+  for (var line in cvsData) {
+    for (int i = 0; i < line.length; i++) {
+      text.write(line[i]);
+      if (i < line.length - 1) {
+        text.write('\t');
+      }
+    }
+    text.write('\n');
+  }
+  return text.toString();
 }
 
 class ScriptureInfo {
