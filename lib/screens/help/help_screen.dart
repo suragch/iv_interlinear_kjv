@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:markdown_widget/widget/all.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class HelpScreen extends StatefulWidget {
   const HelpScreen({super.key});
@@ -11,12 +12,19 @@ class HelpScreen extends StatefulWidget {
 }
 
 class HelpScreenState extends State<HelpScreen> {
-  final controller = WebViewController();
+  String _markdown = '';
 
   @override
   void initState() {
     super.initState();
-    controller.loadFlutterAsset('assets/intro.html');
+    _loadMarkdown();
+  }
+
+  Future<void> _loadMarkdown() async {
+    final String data = await rootBundle.loadString('assets/intro.md');
+    setState(() {
+      _markdown = data;
+    });
   }
 
   @override
@@ -25,7 +33,7 @@ class HelpScreenState extends State<HelpScreen> {
       appBar: AppBar(title: const Text('IV Interlinear KJV')),
       body: Padding(
         padding: const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
-        child: WebViewWidget(controller: controller),
+        child: MarkdownWidget(data: _markdown),
       ),
     );
   }
