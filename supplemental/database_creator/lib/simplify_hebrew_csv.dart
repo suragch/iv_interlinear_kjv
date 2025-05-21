@@ -45,13 +45,7 @@ void createHebrewInterlinear() {
     final english = columns[colEnglish].trim();
     final punctuation = columns[colPunctuation].trim();
     verseWords.add(VerseWord(hebrew: hebrew, english: english, punctuation: punctuation));
-    // text.write(' $hebrew ($english)$punctuation');
-    // lineCount++;
-    // if (lineCount % 10000 == 0) {
-    //   print('$lineCount lines');
-    // }
   }
-  // print(text);
   final outputFile = File('../hebrew/interlinear.csv');
   outputFile.createSync(recursive: true);
   outputFile.writeAsStringSync(text.toString());
@@ -63,80 +57,6 @@ void _writeVerseLine(StringBuffer text, List<VerseWord> verseWords, int bookId, 
     text.write('${word.hebrew} (${word.english})${word.punctuation}');
   }
 }
-
-// Future<void> createInterlinearTable(
-//   DatabaseHelper dbHelper,
-//   Map<String, int> originalMap,
-//   Map<String, int> posMap,
-//   Map<String, int> englishMap,
-// ) async {
-//   final file = File('bsb_tables/bsb_tables.csv');
-//   final lines = file.readAsLinesSync();
-
-//   int bookId = -1;
-//   int chapter = -1;
-//   int verse = -1;
-
-//   List<VerseWord> verseWords = [];
-
-//   for (int i = 1; i < lines.length; i++) {
-//     if (i % 10000 == 0) {
-//       print('Processing line $i');
-//     }
-//     final line = lines[i];
-//     final columns = line.split('\t');
-
-//     if (columns[5].isEmpty) {
-//       if (verseWords.isNotEmpty) {
-//         dbHelper.insertInterlinearVerse(verseWords, bookId, chapter, verse);
-//         verseWords = [];
-//         bookId = -1;
-//         chapter = -1;
-//         verse = -1;
-//       }
-//       continue;
-//     }
-//     final original = originalMap[columns[5].trim()]!;
-
-//     final reference = columns[12];
-//     if (reference.isNotEmpty) {
-//       (bookId, chapter, verse) = _parseReference(reference);
-//     }
-
-//     final language = Language.fromString(columns[4]);
-//     // final transliteration = columns[7];
-//     final partOfSpeech = posMap[columns[9].trim()] ?? -1;
-//     if (partOfSpeech == -1) {
-//       // print('No POS for $original ($bookId, $chapter, $verse)');
-//     }
-//     final strongsCol = (language == Language.greek) ? 11 : 10;
-//     final strongsNumber = int.tryParse(columns[strongsCol]) ?? -1;
-//     if (strongsNumber == -1) {
-//       // print('No strongs number for $original ($bookId, $chapter, $verse)');
-//     }
-//     var english = columns[18].trim();
-//     if (english.isEmpty) {
-//       english = '-';
-//     }
-//     final englishId = englishMap[english]!;
-
-//     final punctuation = columns[19];
-
-//     verseWords.add(
-//       VerseWord(
-//         language: language.id,
-//         original: original,
-//         partOfSpeech: partOfSpeech,
-//         strongsNumber: strongsNumber,
-//         english: englishId,
-//         punctuation: punctuation.isEmpty ? null : punctuation,
-//       ),
-//     );
-//   }
-//   if (verseWords.isNotEmpty) {
-//     dbHelper.insertInterlinearVerse(verseWords, bookId, chapter, verse);
-//   }
-// }
 
 (int bookId, int chapter, int verse) _parseReference(String reference) {
   // reference is in the form: "1 Corinthians 1:1"

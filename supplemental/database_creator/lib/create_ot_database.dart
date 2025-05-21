@@ -7,7 +7,7 @@ Future<void> createOtDatabase() async {
   dbHelper.deleteDatabase();
   dbHelper.init();
   await _populateVersesTable(dbHelper);
-  await _populateStrongsTable();
+  await _populateStrongsTable(dbHelper);
 }
 
 Future<void> _populateVersesTable(DatabaseHelper dbHelper) async {
@@ -56,4 +56,24 @@ Future<void> _populateVersesForBook(DatabaseHelper dbHelper, int bookId, Map<Str
   }
 }
 
-Future<void> _populateStrongsTable() async {}
+Future<void> _populateStrongsTable(DatabaseHelper dbHelper) async {
+  final file = File('../hebrew/bsb_tables.csv');
+  final lines = file.readAsLinesSync();
+  // first row is headers so start from index 1
+  final wordStrongsMap = <String, int>{};
+  for (int i = 1; i < lines.length; i++) {
+    final line = lines[i];
+    final columns = line.split('\t');
+    final hebrew = columns[5].trim();
+    if (hebrew.isEmpty) continue;
+    final strongs = int.tryParse(columns[10].trim());
+    if (strongs == null) continue;
+    wordStrongsMap[hebrew] = strongs;
+    // print('heb: $hebrew, str: $strongs');
+  }
+  print('${wordStrongsMap.length} key-value pairs');
+  for (var entry in wordStrongsMap.entries) {
+    print('${entry.key}: ${entry.value}');
+    dbHelper.insertStrongsNumber(hebrew: entry.key, strongsNumber: entry.value);
+  }
+}
