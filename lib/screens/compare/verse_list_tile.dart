@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:iv_interlinear_kjv/database_helper.dart';
+import 'package:iv_interlinear_kjv/services/database_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NarrowVerseListTile extends StatelessWidget {

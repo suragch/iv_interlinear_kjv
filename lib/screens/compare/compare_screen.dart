@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:iv_interlinear_kjv/book.dart';
-import 'package:iv_interlinear_kjv/database_helper.dart';
-import 'package:iv_interlinear_kjv/verse_list_tile.dart';
+import 'package:iv_interlinear_kjv/models/book.dart';
+import 'package:iv_interlinear_kjv/services/database_helper.dart';
+import 'package:iv_interlinear_kjv/screens/compare/verse_list_tile.dart';
 
 class CompareScreen extends StatefulWidget {
   final bool isInspiredVersion;
