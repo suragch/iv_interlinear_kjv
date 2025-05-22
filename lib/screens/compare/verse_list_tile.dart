@@ -34,7 +34,10 @@ class NarrowVerseListTile extends StatelessWidget {
               child: RichText(
                 text: TextSpan(
                   style: DefaultTextStyle.of(context).style,
-                  children: _ivText(verses[index]),
+                  children: _ivText(
+                    verses[index],
+                    Theme.of(context).textTheme.bodyMedium!.color!,
+                  ),
                 ),
               ),
             ),
@@ -48,7 +51,11 @@ class NarrowVerseListTile extends StatelessWidget {
                 textDirection: isOT ? TextDirection.rtl : TextDirection.ltr,
                 text: TextSpan(
                   style: DefaultTextStyle.of(context).style,
-                  children: _originalText(verses[index], isOT),
+                  children: _originalText(
+                    verses[index],
+                    isOT,
+                    Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               ),
             ),
@@ -65,7 +72,10 @@ class NarrowVerseListTile extends StatelessWidget {
               child: RichText(
                 text: TextSpan(
                   style: DefaultTextStyle.of(context).style,
-                  children: _kjvText(verses[index]),
+                  children: _kjvText(
+                    verses[index],
+                    Theme.of(context).textTheme.bodyMedium!.color!,
+                  ),
                 ),
               ),
             ),
@@ -124,7 +134,10 @@ class WideVerseListTile extends StatelessWidget {
             child: RichText(
               text: TextSpan(
                 style: DefaultTextStyle.of(context).style,
-                children: _ivText(verses[index]),
+                children: _ivText(
+                  verses[index],
+                  Theme.of(context).textTheme.bodyMedium!.color!,
+                ),
               ),
             ),
           ),
@@ -152,7 +165,11 @@ class WideVerseListTile extends StatelessWidget {
               textDirection: isOT ? TextDirection.rtl : TextDirection.ltr,
               text: TextSpan(
                 style: DefaultTextStyle.of(context).style,
-                children: _originalText(verses[index], isOT),
+                children: _originalText(
+                  verses[index],
+                  isOT,
+                  Theme.of(context).colorScheme.primary,
+                ),
               ),
             ),
           ),
@@ -179,7 +196,10 @@ class WideVerseListTile extends StatelessWidget {
             child: RichText(
               text: TextSpan(
                 style: DefaultTextStyle.of(context).style,
-                children: _kjvText(verses[index]),
+                children: _kjvText(
+                  verses[index],
+                  Theme.of(context).textTheme.bodyMedium!.color!,
+                ),
               ),
             ),
           ),
@@ -200,8 +220,8 @@ String _ivTitle(VersesRow row) {
   return _title('Inspired Version', row.ivText, row.ivChapter, row.ivVerse);
 }
 
-List<TextSpan> _ivText(VersesRow row) {
-  return _text(row.ivText);
+List<TextSpan> _ivText(VersesRow row, Color underlineColor) {
+  return _text(row.ivText, underlineColor);
 }
 
 String _originalTitle(VersesRow row, bool isOT) {
@@ -209,7 +229,7 @@ String _originalTitle(VersesRow row, bool isOT) {
   return _title(version, row.kjvText, row.kjvChapter, row.kjvVerse);
 }
 
-List<TextSpan> _originalText(VersesRow? row, bool isOT) {
+List<TextSpan> _originalText(VersesRow? row, bool isOT, Color highlightColor) {
   String? text = row?.originalText;
   List<TextSpan> spans = [];
   if (text == null) {
@@ -239,10 +259,10 @@ List<TextSpan> _originalText(VersesRow? row, bool isOT) {
           ..onTap = () {
             _openWordInBrowser(isOT, match.group(0)!);
           },
-        style: const TextStyle(
-          color: Colors.blue,
+        style: TextStyle(
+          color: highlightColor,
           decoration: TextDecoration.underline,
-          decorationColor: Colors.blue,
+          decorationColor: highlightColor,
         ),
       ),
     );
@@ -287,11 +307,11 @@ String _kjvTitle(VersesRow row) {
   );
 }
 
-List<TextSpan> _kjvText(VersesRow row) {
-  return _text(row.kjvText);
+List<TextSpan> _kjvText(VersesRow row, Color underlineColor) {
+  return _text(row.kjvText, underlineColor);
 }
 
-List<TextSpan> _text(String? verseText) {
+List<TextSpan> _text(String? verseText, Color underlineColor) {
   List<TextSpan> spans = [];
   if (verseText == null) {
     spans.add(const TextSpan(text: '---'));
@@ -321,9 +341,10 @@ List<TextSpan> _text(String? verseText) {
     spans.add(
       TextSpan(
         text: verseText.substring(startIndex, endIndex),
-        style: const TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.bold,
           decoration: TextDecoration.underline,
+          decorationColor: underlineColor,
         ),
       ),
     );
