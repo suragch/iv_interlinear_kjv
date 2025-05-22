@@ -23,10 +23,12 @@ class CompareScreen extends StatefulWidget {
 
 class CompareScreenState extends State<CompareScreen> {
   List<VersesRow> verses = [];
+  bool isOT = false;
 
   @override
   void initState() {
-    _loadVersesFromDatabase().then((results) {
+    isOT = Book.isOtBookId(widget.bookId);
+    _loadVersesFromDatabase(isOT).then((results) {
       setState(() {
         verses = results;
       });
@@ -44,9 +46,9 @@ class CompareScreenState extends State<CompareScreen> {
             itemCount: verses.length,
             itemBuilder: (context, index) {
               if (orientation == Orientation.portrait) {
-                return NarrowVerseListTile(verses: verses, index: index);
+                return NarrowVerseListTile(verses: verses, index: index, isOT: isOT);
               } else {
-                return WideVerseListTile(verses: verses, index: index);
+                return WideVerseListTile(verses: verses, index: index, isOT: isOT);
               }
             },
           );
@@ -55,12 +57,17 @@ class CompareScreenState extends State<CompareScreen> {
     );
   }
 
-  Future<List<VersesRow>> _loadVersesFromDatabase() async {
-    final helper = NtDatabaseHelper.instance;
-    return await helper.getChapter(
-      true, // TODO: return all verses
-      widget.bookId,
-      widget.chapter,
-    );
+  Future<List<VersesRow>> _loadVersesFromDatabase(bool isOT) async {
+    if (isOT) {
+      final helper = OtDatabaseHelper.instance;
+      return await helper.getChapter(widget.bookId, widget.chapter);
+    } else {
+      final helper = NtDatabaseHelper.instance;
+      return await helper.getChapter(
+        true, // TODO: return all verses
+        widget.bookId,
+        widget.chapter,
+      );
+    }
   }
 }

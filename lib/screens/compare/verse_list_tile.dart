@@ -6,8 +6,9 @@ import 'package:url_launcher/url_launcher.dart';
 class NarrowVerseListTile extends StatelessWidget {
   final int index;
   final List<VersesRow> verses;
+  final bool isOT;
 
-  const NarrowVerseListTile({super.key, required this.index, required this.verses});
+  const NarrowVerseListTile({super.key, required this.index, required this.verses, required this.isOT});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class NarrowVerseListTile extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 32.0, right: 10.0),
               child: RichText(
-                text: TextSpan(style: DefaultTextStyle.of(context).style, children: _originalText(verses[index])),
+                text: TextSpan(style: DefaultTextStyle.of(context).style, children: _originalText(verses[index], isOT)),
               ),
             ),
             Padding(padding: const EdgeInsets.all(10.0), child: Text(_kjvTitle(verses[index]))),
@@ -49,8 +50,9 @@ class NarrowVerseListTile extends StatelessWidget {
 class WideVerseListTile extends StatelessWidget {
   final int index;
   final List<VersesRow> verses;
+  final bool isOT;
 
-  const WideVerseListTile({super.key, required this.index, required this.verses});
+  const WideVerseListTile({super.key, required this.index, required this.verses, required this.isOT});
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +94,7 @@ class WideVerseListTile extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
             child: RichText(
-              text: TextSpan(style: DefaultTextStyle.of(context).style, children: _originalText(verses[index])),
+              text: TextSpan(style: DefaultTextStyle.of(context).style, children: _originalText(verses[index], isOT)),
             ),
           ),
         ],
@@ -137,7 +139,7 @@ String _originalTitle(VersesRow row) {
   return _title('Greek', row.kjvText, row.kjvChapter, row.kjvVerse);
 }
 
-List<TextSpan> _originalText(VersesRow? row) {
+List<TextSpan> _originalText(VersesRow? row, bool isOT) {
   String? text = row?.originalText;
   List<TextSpan> spans = [];
   if (text == null) {
@@ -168,7 +170,7 @@ List<TextSpan> _originalText(VersesRow? row) {
         text: spanText,
         recognizer: TapGestureRecognizer()
           ..onTap = () {
-            _openWordInBrowser(spanText);
+            _openWordInBrowser(isOT, spanText);
           },
         style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline, decorationColor: Colors.blue),
       ),
@@ -199,14 +201,20 @@ int _indexOfGreekEnd(String text, int fromIndex) {
   return text.length;
 }
 
-_openWordInBrowser(String greekWord) async {
-  final helper = NtDatabaseHelper.instance;
-  final strongsNumber = await helper.getStrongsNumber(greekWord);
+_openWordInBrowser(bool isOT, String word) async {
+  int? strongsNumber;
+  if (isOT) {
+    final helper = OtDatabaseHelper.instance;
+    strongsNumber = await helper.getStrongsNumber(word);
+  } else {
+    final helper = NtDatabaseHelper.instance;
+    strongsNumber = await helper.getStrongsNumber(word);
+  }
   if (strongsNumber == null) {
     return;
   }
-
-  final url = Uri.parse('https://biblehub.com/greek/$strongsNumber.htm');
+  final language = isOT ? 'hebrew' : 'greek';
+  final url = Uri.parse('https://biblehub.com/$language/$strongsNumber.htm');
   if (await canLaunchUrl(url)) {
     await launchUrl(url);
   } else {

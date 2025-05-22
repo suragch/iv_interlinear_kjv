@@ -27,4 +27,4 @@ flutter:
   assets:
     - assets/intro.md
     - assets/databases/text.db
-    - assets/databases/oot.db
+    - assets/databases/ot.db

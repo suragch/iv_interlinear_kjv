@@ -88,10 +88,10 @@ class OtDatabaseHelper {
       keyBookId,
       keyIvChapterId,
       keyIvVerseId,
-      keyIvLineId,
+      // keyIvLineId,
       keyIvVerseText,
       keyKjvChapterId,
-      // keyKjvVerseId,
+      keyKjvVerseId,
       keyKjvVerseText,
       keyOriginalVerseText,
     ];
