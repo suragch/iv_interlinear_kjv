@@ -1,13 +1,14 @@
-### Comparison of Inspired Version with the King James Version and with a Greek Interlinear Bible
+### Comparison of Inspired Version with the King James Version and with an Interlinear Bible
 
 Complied by Jack Sande
 
-The Berean Interlinear Bible is offically dedicated to the public domain (CC0 1.0)
-//berean.bible - Berean Bible Homepage
-//interlinearbible.com - Berean Interlinear Bible
-//literalbible.com - Berean Literal Bible
-//bereanbible.com - Berean Standard Bible
-//majoritybible.com - Majority Standard Bible
+The Berean Interlinear Bible is officially dedicated to the public domain (CC0 1.0)
+
+- [berean.bible](https://berean.bible) - Berean Bible Homepage
+- [interlinearbible.com](https://interlinearbible.com) - Berean Interlinear Bible
+- [literalbible.com](https://literalbible.com) - Berean Literal Bible
+- [bereanbible.com](https://bereanbible.com) - Berean Standard Bible
+- [majoritybible.com](https://majoritybible.com) - Majority Standard Bible
 
 **What is the purpose of these parallel versions?**
 
@@ -63,7 +64,7 @@ The Old Testament lacks the quantity of New Testament manuscripts. It is difficu
 
 The Dead Sea Scroll of Isaiah was 1000 years older than the oldest previously known manuscript. Gleason L. Archer wrote about Isaiah, “[it] proved to be word for word identical with our standard Hebrew Bible in more than 95 percent of the text. The 5 percent of variation consisted chiefly of obvious slips of the pen and variations in spelling.”³⁰ Furthermore, the Septuagint, a translation of the Hebrew Old Testament into Greek, would be a confirmation of the tenth-century Masoretic text.³¹
 
-**What resources were used in the Inspired Version, the KJV, and The Berean Interlinear Bible)?**
+**What resources were used in the Inspired Version, the KJV, and The Berean Interlinear Bible?**
 
 The Inspired Version was downloaded from [http://www.centerplace.org/hs/iv/](http://www.centerplace.org/hs/iv/). The King James Version was downloaded from [http://spreadsheetpage.com/index.php/file/king_james_bible/](http://spreadsheetpage.com/index.php/file/king_james_bible/) The Berean Interlinear Bible was downloaded from [http://berean.bible/downloads.htm](http://berean.bible/downloads.htm). Software, for noting the differences between the Inspired Version and the King James Version, was downloaded from [https://www.diffchecker.com/diff](https://www.diffchecker.com/diff). A hard copy of the Inspired Version was used to check for any differences in the downloaded Inspired Version. For each adjustment deference was given to the hard copy. A hard copy of the King James Bible was used to check for any differences in the downloaded King James Version. Again deference was given to the hard copy.
 
