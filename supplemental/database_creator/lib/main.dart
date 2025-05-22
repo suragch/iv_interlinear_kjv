@@ -6,4 +6,5 @@ Future<void> main() async {
   // await convertOtHtmlToCsv();
   // createHebrewInterlinear();
   await createOtDatabase();
+  // findHebrewCharsUsed();
 }

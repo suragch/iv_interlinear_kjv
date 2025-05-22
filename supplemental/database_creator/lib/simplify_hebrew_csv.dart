@@ -44,22 +44,14 @@ void createHebrewInterlinear() {
 
     final english = columns[colEnglish].trim();
     final punctuation = columns[colPunctuation].trim();
-    verseWords.add(
-      VerseWord(hebrew: hebrew, english: english, punctuation: punctuation),
-    );
+    verseWords.add(VerseWord(hebrew: hebrew, english: english, punctuation: punctuation));
   }
   final outputFile = File('../hebrew/interlinear.csv');
   outputFile.createSync(recursive: true);
   outputFile.writeAsStringSync(text.toString());
 }
 
-void _writeVerseLine(
-  StringBuffer text,
-  List<VerseWord> verseWords,
-  int bookId,
-  int chapter,
-  int verse,
-) {
+void _writeVerseLine(StringBuffer text, List<VerseWord> verseWords, int bookId, int chapter, int verse) {
   text.write('\n$bookId\t$chapter\t$verse\t');
   for (var word in verseWords) {
     text.write('${word.hebrew} (${word.english})${word.punctuation}');
@@ -152,12 +144,47 @@ const _fullNameToBookIdMap = {
 };
 
 class VerseWord {
-  VerseWord({
-    required this.hebrew,
-    required this.english,
-    required this.punctuation,
-  });
+  VerseWord({required this.hebrew, required this.english, required this.punctuation});
   final String hebrew;
   final String english;
   final String? punctuation;
+}
+
+void findHebrewCharsUsed() {
+  final file = File('../hebrew/bsb_tables.csv');
+  final lines = file.readAsLinesSync();
+
+  Set<String> chars = {};
+
+  const colLanguage = 4;
+  const colHebrew = 5;
+
+  int counter = 0;
+  for (int i = 1; i < lines.length; i++) {
+    var line = lines[i];
+    final columns = line.split('\t');
+    final language = columns[colLanguage];
+    if (language == 'Greek') break;
+
+    final hebrew = columns[colHebrew].trim();
+    if (hebrew.isEmpty) continue;
+
+    for (int j = 0; j < hebrew.length; j++) {
+      chars.add(hebrew[j]);
+      // if (hebrew[j] == '\u200d') {
+      if (hebrew[j] == '\u0020') {
+        print(hebrew);
+        counter++;
+      }
+    }
+    // if (counter > 20) {
+    //   break;
+    // }
+  }
+  final sortedChars = chars.toList()..sort();
+  print(sortedChars.length);
+  print('counter: $counter');
+  for (final char in sortedChars) {
+    print('$char - 0x${char.codeUnitAt(0).toRadixString(16).padLeft(4, '0')}');
+  }
 }
