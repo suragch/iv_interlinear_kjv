@@ -4,6 +4,95 @@ import 'package:iv_interlinear_kjv/screens/compare/compare_screen.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../help/help_screen.dart';
+import 'chapter_chooser.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final _chapterNotifier = ValueNotifier<(int, int)?>(null);
+
+  @override
+  void dispose() {
+    _chapterNotifier.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('IV Interlinear KJV')),
+      body: Stack(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: Book.otBookNames.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(Book.otBookNames[index]),
+                      onTap: () {
+                        final bookId = Book.firstOtBook + index;
+                        final chaptersForBook = Book.getNumberOfChapters(bookId);
+                        _chapterNotifier.value = (bookId, chaptersForBook);
+                      },
+                    );
+                  },
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: Book.ntBookNames.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(Book.ntBookNames[index]),
+                      onTap: () {
+                        final bookId = Book.firstNtBook + index;
+                        final chaptersForBook = Book.getNumberOfChapters(bookId);
+                        _chapterNotifier.value = (bookId, chaptersForBook);
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+          ValueListenableBuilder<(int, int)?>(
+            valueListenable: _chapterNotifier,
+            builder: (context, bookChapter, child) {
+              if (bookChapter == null) {
+                return const SizedBox();
+              }
+              final (bookId, chapterCount) = bookChapter;
+              return ChapterChooser(
+                chapterCount: chapterCount,
+                onChapterSelected: (chapter) {
+                  _chapterNotifier.value = null;
+                  if (chapter == null) return;
+                  _onChapterSelected(bookId, chapter);
+                },
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _onChapterSelected(int bookId, int chapter) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CompareScreen(bookId: bookId, chapter: chapter),
+      ),
+    );
+  }
+}
 
 class Homepage extends StatelessWidget {
   const Homepage({super.key});
@@ -27,10 +116,7 @@ class Homepage extends StatelessWidget {
   }
 
   void _navigateToHelpScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const HelpScreen()),
-    );
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const HelpScreen()));
   }
 }
 
@@ -42,11 +128,7 @@ class HomepageBody extends StatefulWidget {
   State<HomepageBody> createState() => _HomepageBodyState();
 }
 
-enum Version {
-  iv,
-  interlinear,
-  kjv,
-}
+enum Version { iv, interlinear, kjv }
 
 class _HomepageBodyState extends State<HomepageBody> {
   String appVersionNumber = '';
@@ -87,21 +169,9 @@ class _HomepageBodyState extends State<HomepageBody> {
   Widget _narrowMainLayout(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            _optionControls(),
-            _compareButton(),
-          ],
-        ),
-        Align(
-          alignment: Alignment.bottomLeft,
-          child: _copyrightInfo(),
-        ),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: _appVersionInfo(),
-        ),
+        Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[_optionControls(), _compareButton()]),
+        Align(alignment: Alignment.bottomLeft, child: _copyrightInfo()),
+        Align(alignment: Alignment.bottomRight, child: _appVersionInfo()),
       ],
     );
   }
@@ -112,19 +182,10 @@ class _HomepageBodyState extends State<HomepageBody> {
         _optionControls(),
         Align(
           alignment: Alignment.topRight,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: _compareButton(),
-          ),
+          child: Padding(padding: const EdgeInsets.symmetric(vertical: 16.0), child: _compareButton()),
         ),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: _copyrightInfo(),
-        ),
-        Align(
-          alignment: Alignment.topRight,
-          child: _appVersionInfo(),
-        ),
+        Align(alignment: Alignment.bottomRight, child: _copyrightInfo()),
+        Align(alignment: Alignment.topRight, child: _appVersionInfo()),
       ],
     );
   }
@@ -217,75 +278,68 @@ class _HomepageBodyState extends State<HomepageBody> {
   Widget _appVersionInfo() {
     return SafeArea(
       minimum: const EdgeInsets.all(8.0),
-      child: Text(
-        appVersionNumber,
-        style: const TextStyle(fontSize: 8.0),
-      ),
+      child: Text(appVersionNumber, style: const TextStyle(fontSize: 8.0)),
     );
   }
 
   void _onBookClick(BuildContext context) {
-    final books = Book.getBookListForTestament(Book.newTestament);
-    List<SimpleDialogOption> bookOptions = List.generate(books.length, (int index) {
-      return SimpleDialogOption(
-        child: Text(books[index]),
-        onPressed: () {
-          setState(() {
-            bookId = Book.getBookId(Book.newTestament, index);
-            if (Book.getNumberOfChapters(bookId) < chapterNumber) {
-              chapterNumber = 1;
-            }
-          });
+    // final books = Book.getBookListForTestament(Book.newTestament);
+    // List<SimpleDialogOption> bookOptions = List.generate(books.length, (int index) {
+    //   return SimpleDialogOption(
+    //     child: Text(books[index]),
+    //     onPressed: () {
+    //       setState(() {
+    //         bookId = Book.getBookId(Book.newTestament, index);
+    //         if (Book.getNumberOfChapters(bookId) < chapterNumber) {
+    //           chapterNumber = 1;
+    //         }
+    //       });
 
-          Navigator.of(context).pop();
-        },
-      );
-    });
+    //       Navigator.of(context).pop();
+    //     },
+    //   );
+    // });
 
-    SimpleDialog dialog = SimpleDialog(
-      title: const Text('Choose a book'),
-      children: bookOptions,
-    );
+    // SimpleDialog dialog = SimpleDialog(
+    //   title: const Text('Choose a book'),
+    //   children: bookOptions,
+    // );
 
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return dialog;
-      },
-    );
+    // // show the dialog
+    // showDialog(
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return dialog;
+    //   },
+    // );
   }
 
   void _onChapterClick(BuildContext context) {
     int numberOfChapters = Book.getNumberOfChapters(bookId);
 
     Widget content = GridView.count(
-        crossAxisCount: 6,
-        children: List<Widget>.generate(numberOfChapters, (index) {
-          return GridTile(
-            child: Card(
-              child: InkResponse(
-                child: Center(
-                  child: Text('${index + 1}'),
-                ),
-                onTap: () {
-                  setState(() {
-                    chapterNumber = index + 1;
-                  });
-                  Navigator.of(context).pop();
-                },
-              ),
+      crossAxisCount: 6,
+      children: List<Widget>.generate(numberOfChapters, (index) {
+        return GridTile(
+          child: Card(
+            child: InkResponse(
+              child: Center(child: Text('${index + 1}')),
+              onTap: () {
+                setState(() {
+                  chapterNumber = index + 1;
+                });
+                Navigator.of(context).pop();
+              },
             ),
-          );
-        }));
+          ),
+        );
+      }),
+    );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: const Text("Choose a chapter"),
-      content: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.7,
-        child: content,
-      ),
+      content: SizedBox(width: MediaQuery.of(context).size.width * 0.7, child: content),
     );
 
     // show the dialog
@@ -298,14 +352,12 @@ class _HomepageBodyState extends State<HomepageBody> {
   }
 
   void _onCompareClick(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => CompareScreen(
-                isInspiredVersion: isInspiredVersion,
-                bookId: bookId,
-                chapter: chapterNumber,
-              )),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) =>
+    //         CompareScreen(isInspiredVersion: isInspiredVersion, bookId: bookId, chapter: chapterNumber),
+    //   ),
+    // );
   }
 }

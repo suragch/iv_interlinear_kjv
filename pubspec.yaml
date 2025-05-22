@@ -4,7 +4,7 @@ description: Comparison of the Inspired Version, a Greek interlinear, and the Ki
 version: 2.2.0+12
 
 environment:
-  sdk: ^3.0.0
+  sdk: ^3.8.0
 
 dependencies:
   flutter:

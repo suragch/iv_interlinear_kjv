@@ -4,13 +4,13 @@ import 'package:iv_interlinear_kjv/services/database_helper.dart';
 import 'package:iv_interlinear_kjv/screens/compare/verse_list_tile.dart';
 
 class CompareScreen extends StatefulWidget {
-  final bool isInspiredVersion;
+  // final bool isInspiredVersion;
   final int bookId;
   final int chapter;
 
   const CompareScreen({
     super.key,
-    required this.isInspiredVersion,
+    // required this.isInspiredVersion,
     required this.bookId,
     required this.chapter,
   });
@@ -58,7 +58,7 @@ class CompareScreenState extends State<CompareScreen> {
   Future<List<VersesRow>> _loadVersesFromDatabase() async {
     final helper = DatabaseHelper.instance;
     return await helper.getChapter(
-      widget.isInspiredVersion,
+      true, // TODO: return all verses
       widget.bookId,
       widget.chapter,
     );

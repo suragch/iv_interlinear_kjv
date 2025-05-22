@@ -99,7 +99,7 @@ class Book {
     22
   ];
 
-  static const _otBookNames = [
+  static const otBookNames = [
     "Genesis",
     "Exodus",
     "Leviticus",
@@ -141,7 +141,7 @@ class Book {
     "Malachi"
   ];
 
-  static const _ntBookNames = [
+  static const ntBookNames = [
     "Matthew",
     "Mark",
     "Luke",
@@ -173,9 +173,9 @@ class Book {
 
   static String getBookName(int bookId) {
     if (isOtBookId(bookId)) {
-      return _otBookNames[bookId - firstOtBook];
+      return otBookNames[bookId - firstOtBook];
     } else if (isNtBookId(bookId)) {
-      return _ntBookNames[bookId - firstNtBook];
+      return ntBookNames[bookId - firstNtBook];
     }
     throw ArgumentError("not a valid BookId");
   }
@@ -198,21 +198,17 @@ class Book {
   }
 
   static bool isSingleChapterBook(int bookId) {
-    return bookId == obadiah ||
-        bookId == philemon ||
-        bookId == iiJohn ||
-        bookId == iiiJohn ||
-        bookId == jude;
+    return bookId == obadiah || bookId == philemon || bookId == iiJohn || bookId == iiiJohn || bookId == jude;
   }
 
   static List<String> getBookList() {
-    return List.from(_otBookNames)..addAll(_ntBookNames);
+    return List.from(otBookNames)..addAll(ntBookNames);
   }
 
-  static List<String> getBookListForTestament(int testamentId) {
-    if (testamentId == oldTestament) return _otBookNames;
-    return _ntBookNames;
-  }
+  // static List<String> getBookListForTestament(int testamentId) {
+  //   if (testamentId == oldTestament) return _otBookNames;
+  //   return _ntBookNames;
+  // }
 
   static int getBookId(int testament, int index) {
     if (testament == oldTestament) {

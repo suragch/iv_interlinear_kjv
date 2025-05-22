@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorSchemeSeed: Colors.green,
       ),
       title: 'IV Interlinear KJV',
-      home: const Homepage(),
+      home: const HomeScreen(),
     );
   }
 }
