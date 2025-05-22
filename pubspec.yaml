@@ -29,3 +29,12 @@ flutter:
     - assets/intro.md
     - assets/databases/text.db
     - assets/databases/ot.db
+  fonts:
+    # Hebrew and Aramaic
+    - family: Ezra
+      fonts:
+        - asset: assets/fonts/ezra/SILEOTSR.ttf
+    # Greek
+    - family: Galatia
+      fonts:
+        - asset: assets/fonts/galatia/GalSILR.ttf

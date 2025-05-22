@@ -46,7 +46,7 @@ class NarrowVerseListTile extends StatelessWidget {
               child: Text(_originalTitle(verses[index], isOT)),
             ),
             Padding(
-              padding: EdgeInsets.only(left: isOT ? 10.0 : 32.0, right: 10.0),
+              padding: EdgeInsets.only(left: 32.0, right: 10.0),
               child: RichText(
                 textDirection: isOT ? TextDirection.rtl : TextDirection.ltr,
                 text: TextSpan(
@@ -84,6 +84,10 @@ class NarrowVerseListTile extends StatelessWidget {
       ),
     );
   }
+}
+
+String fontFamilyForTestament(bool isOT) {
+  return (isOT) ? 'Ezra' : 'Galatia';
 }
 
 class WideVerseListTile extends StatelessWidget {
@@ -260,6 +264,7 @@ List<TextSpan> _originalText(VersesRow? row, bool isOT, Color highlightColor) {
             _openWordInBrowser(isOT, match.group(0)!);
           },
         style: TextStyle(
+          fontFamily: fontFamilyForTestament(isOT),
           color: highlightColor,
           decoration: TextDecoration.underline,
           decorationColor: highlightColor,
