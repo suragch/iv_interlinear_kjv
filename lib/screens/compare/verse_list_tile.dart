@@ -213,30 +213,35 @@ List<TextSpan> _originalText(VersesRow? row, bool isOT) {
     return spans;
   }
 
-  int startIndex = 0;
-  int endIndex = 0;
-  int breakIndex = 0;
+  // \u0370-\u03FF Greek
+  // \u1F00-\u1FFF Greek Extended
+  // \u0590-\u05FF Hebrew
+  // \u200D Zero Width Joiner (occurs in some Hebrew words)
+  // The repeat after a space allows multiple words.
+  final original = RegExp(
+    r'[\u0370-\u03FF\u1F00-\u1FFF\u0590-\u05FF\u200D]+(?:\s[\u0370-\u03FF\u1F00-\u1FFF\u0590-\u05FF\u200D]+)*',
+  );
 
-  do {
-    startIndex = _indexOfOriginalStart(text, breakIndex);
-    endIndex = _indexOfOriginalEnd(text, startIndex);
+  // const String greek = r'\\u0370-\\u03FF';
+  // const String greekExtended = r'\\u1F00-\\u1FFF';
+  // const String hebrew = r'\\u0590-\\u05FF';
+  // const String zwj =
+  //     r'\\u200D'; // Zero Width Joiner (occurs in some Hebrew words)
+  // const String original = '$greek$hebrew$greekExtended$zwj';
+  // final originalWithSpaces = RegExp('[$original]+(?:\\s[$original]+)*');
 
-    if (startIndex == -1 || endIndex == -1) {
-      spans.add(TextSpan(text: text.substring(breakIndex)));
-      return spans;
+  int lastIndex = 0;
+  for (Match match in original.allMatches(text)) {
+    if (match.start > lastIndex) {
+      spans.add(TextSpan(text: text.substring(lastIndex, match.start)));
     }
 
-    if (startIndex > breakIndex) {
-      spans.add(TextSpan(text: text.substring(breakIndex, startIndex)));
-    }
-
-    final spanText = text.substring(startIndex, endIndex);
     spans.add(
       TextSpan(
-        text: spanText,
+        text: match.group(0),
         recognizer: TapGestureRecognizer()
           ..onTap = () {
-            _openWordInBrowser(isOT, spanText);
+            _openWordInBrowser(isOT, match.group(0)!);
           },
         style: const TextStyle(
           color: Colors.blue,
@@ -246,11 +251,54 @@ List<TextSpan> _originalText(VersesRow? row, bool isOT) {
       ),
     );
 
-    breakIndex = endIndex;
-  } while (breakIndex < text.length);
+    lastIndex = match.end;
+  }
+
+  if (lastIndex < text.length) {
+    spans.add(TextSpan(text: text.substring(lastIndex)));
+  }
 
   return spans;
 }
+
+// int startIndex = 0;
+// int endIndex = 0;
+// int breakIndex = 0;
+
+// do {
+//   startIndex = _indexOfOriginalStart(text, breakIndex);
+//   endIndex = _indexOfOriginalEnd(text, startIndex);
+
+//   if (startIndex == -1 || endIndex == -1) {
+//     spans.add(TextSpan(text: text.substring(breakIndex)));
+//     return spans;
+//   }
+
+//   if (startIndex > breakIndex) {
+//     spans.add(TextSpan(text: text.substring(breakIndex, startIndex)));
+//   }
+
+//   final spanText = text.substring(startIndex, endIndex);
+//   spans.add(
+//     TextSpan(
+//       text: spanText,
+//       recognizer: TapGestureRecognizer()
+//         ..onTap = () {
+//           _openWordInBrowser(isOT, spanText);
+//         },
+//       style: const TextStyle(
+//         color: Colors.blue,
+//         decoration: TextDecoration.underline,
+//         decorationColor: Colors.blue,
+//       ),
+//     ),
+//   );
+
+//   breakIndex = endIndex;
+// } while (breakIndex < text.length);
+
+// return spans;
+// }
 
 int _indexOfOriginalStart(String text, int fromIndex) {
   for (int i = fromIndex; i < text.length; i++) {
