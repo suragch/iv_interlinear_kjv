@@ -1,7 +1,7 @@
 name: iv_interlinear_kjv
 description: Comparison of the Inspired Version, a Greek interlinear, and the King James Version.
 # Also update version in app code for homepage because the package_info_plus plugin isn't working on iOS
-version: 2.2.0+12
+version: 3.0.0+13
 
 environment:
   sdk: ^3.8.0

@@ -15,6 +15,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _chapterNotifier = ValueNotifier<(int, int)?>(null);
+  final _versionNotifier = ValueNotifier<String>('');
+
+  @override
+  void initState() {
+    _getVersionNumber();
+    super.initState();
+  }
+
+  Future<void> _getVersionNumber() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    _versionNotifier.value = packageInfo.version;
+  }
 
   @override
   void dispose() {
@@ -25,7 +37,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('IV Interlinear KJV')),
+      appBar: AppBar(
+        title: const Text('IV Interlinear KJV'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const HelpScreen()));
+            },
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           Row(
@@ -76,6 +98,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (chapter == null) return;
                   _onChapterSelected(bookId, chapter);
                 },
+              );
+            },
+          ),
+          ValueListenableBuilder(
+            valueListenable: _versionNotifier,
+            builder: (context, version, child) {
+              return Align(
+                alignment: Alignment.bottomRight,
+                child: SafeArea(
+                  minimum: const EdgeInsets.all(8.0),
+                  child: Text(
+                    version,
+                    style: TextStyle(
+                      fontSize: 8.0,
+                      color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.6),
+                    ),
+                  ),
+                ),
               );
             },
           ),
