@@ -26,4 +26,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/intro.md
-    - assets/text.db
+    - assets/databases/text.db
+    - assets/databases/oot.db

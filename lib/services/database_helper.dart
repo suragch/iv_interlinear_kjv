@@ -26,7 +26,7 @@ const String keyGreekWord = "greek_word";
 const String keyStrongsNumber = "strongs_number";
 
 class DatabaseHelper {
-  static const String _databaseFolder = 'assets';
+  static const String _databaseFolder = 'assets/databases';
   static const String _databaseName = "text.db";
 
   DatabaseHelper._privateConstructor();
@@ -58,10 +58,8 @@ class DatabaseHelper {
       }
 
       // Copy from asset
-      ByteData data =
-          await rootBundle.load(join(_databaseFolder, _databaseName));
-      List<int> bytes =
-          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      ByteData data = await rootBundle.load(join(_databaseFolder, _databaseName));
+      List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(path).writeAsBytes(bytes);
 
       // open the database
@@ -77,13 +75,11 @@ class DatabaseHelper {
 
   // Helper methods
 
-  Future<List<VersesRow>> getChapter(
-      bool isInspiredVersion, int bookId, int chapter) async {
+  Future<List<VersesRow>> getChapter(bool isInspiredVersion, int bookId, int chapter) async {
     Database db = await database;
 
     List<String> columnsToSelect = [keyId];
-    String chapterColumn =
-        (isInspiredVersion) ? keyIvChapterId : keyKjvChapterId;
+    String chapterColumn = (isInspiredVersion) ? keyIvChapterId : keyKjvChapterId;
     String sortOrder = (isInspiredVersion)
         ? '$keyIvChapterId ASC, $keyIvVerseId ASC'
         : '$keyKjvChapterId ASC, $keyKjvVerseId ASC';
@@ -103,8 +99,7 @@ class DatabaseHelper {
     return _getIdRange(db, startId, endId);
   }
 
-  Future<List<VersesRow>> _getIdRange(
-      Database db, int startId, int endId) async {
+  Future<List<VersesRow>> _getIdRange(Database db, int startId, int endId) async {
     List<String> columnsToSelect = [
       keyBookId,
       keyIvChapterId,
@@ -118,10 +113,12 @@ class DatabaseHelper {
     ];
     const whereString = '$keyId >=? AND $keyId <=?';
     final whereArguments = [startId, endId];
-    final results = await db.query(_tableVerses,
-        columns: columnsToSelect,
-        where: whereString,
-        whereArgs: whereArguments);
+    final results = await db.query(
+      _tableVerses,
+      columns: columnsToSelect,
+      where: whereString,
+      whereArgs: whereArguments,
+    );
 
     List<VersesRow> returnList = [];
     for (final map in results) {
@@ -136,10 +133,12 @@ class DatabaseHelper {
     final columnsToSelect = [keyStrongsNumber];
     const whereString = '$keyGreekWord = ?';
     final whereArguments = [greekWord];
-    final result = await db.query(_tableStrongsNumbers,
-        columns: columnsToSelect,
-        where: whereString,
-        whereArgs: whereArguments);
+    final result = await db.query(
+      _tableStrongsNumbers,
+      columns: columnsToSelect,
+      where: whereString,
+      whereArgs: whereArguments,
+    );
 
     if (result.isNotEmpty) {
       return result.first[keyStrongsNumber] as int;
@@ -203,7 +202,7 @@ class VersesRow {
       keyKjvChapterId: kjvChapter,
       keyKjvVerseId: kjvVerse,
       keyKjvVerseText: kjvText,
-      keyOriginalVerseText: originalText
+      keyOriginalVerseText: originalText,
     };
     if (id != null) {
       map[keyId] = id;
