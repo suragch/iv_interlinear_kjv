@@ -72,11 +72,7 @@ class CompareScreenState extends State<CompareScreen> {
       return await helper.getChapter(widget.bookId, widget.chapter);
     } else {
       final helper = getIt<NtDatabaseHelper>();
-      return await helper.getChapter(
-        true, // TODO: return all verses
-        widget.bookId,
-        widget.chapter,
-      );
+      return await helper.getChapter(widget.bookId, widget.chapter);
     }
   }
 }
