@@ -16,6 +16,7 @@ dependencies:
   path: ^1.9.1
   gpt_markdown: ^1.0.19
   markdown_widget: ^2.3.2+8
+  get_it: ^8.0.3
 
 dev_dependencies:
   flutter_test:

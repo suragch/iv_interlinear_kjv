@@ -51,23 +51,11 @@ class DatabaseHelper {
         ${Schema.colOriginal}
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       ''',
-      [
-        bookId,
-        ivChapter,
-        ivVerse,
-        ivText,
-        kjvChapter,
-        kjvVerse,
-        kjvText,
-        originalText,
-      ],
+      [bookId, ivChapter, ivVerse, ivText, kjvChapter, kjvVerse, kjvText, originalText],
     );
   }
 
-  void insertStrongsNumber({
-    required String hebrew,
-    required int strongsNumber,
-  }) {
+  void insertStrongsNumber({required String hebrew, required int strongsNumber}) {
     _database.execute(
       '''
       INSERT INTO ${Schema.strongsTable} (
@@ -110,17 +98,15 @@ class Schema {
   ''';
 
   // Strong's number table
-  static const String strongsTable = "strongs";
+  static const String strongsTable = "strongs_numbers";
 
   // strongs column names
-  static const String strongsColId = '_id';
   static const String colHebrew = 'hebrew_word';
   static const String colStrongsNumber = 'strongs_number';
 
   // SQL statements
   static const String createStrongsTable = '''
   CREATE TABLE IF NOT EXISTS $strongsTable (
-    $strongsColId INTEGER PRIMARY KEY AUTOINCREMENT,
     $colHebrew TEXT NOT NULL,
     $colStrongsNumber INTEGER NOT NULL
   )

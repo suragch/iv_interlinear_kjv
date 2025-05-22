@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iv_interlinear_kjv/models/book.dart';
 import 'package:iv_interlinear_kjv/services/database_helper.dart';
 import 'package:iv_interlinear_kjv/screens/compare/verse_list_tile.dart';
+import 'package:iv_interlinear_kjv/services/service_locator.dart';
 
 class CompareScreen extends StatefulWidget {
   // final bool isInspiredVersion;
@@ -67,10 +68,10 @@ class CompareScreenState extends State<CompareScreen> {
 
   Future<List<VersesRow>> _loadVersesFromDatabase(bool isOT) async {
     if (isOT) {
-      final helper = OtDatabaseHelper.instance;
+      final helper = getIt<OtDatabaseHelper>();
       return await helper.getChapter(widget.bookId, widget.chapter);
     } else {
-      final helper = NtDatabaseHelper.instance;
+      final helper = getIt<NtDatabaseHelper>();
       return await helper.getChapter(
         true, // TODO: return all verses
         widget.bookId,

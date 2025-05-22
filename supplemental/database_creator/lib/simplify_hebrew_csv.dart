@@ -54,7 +54,7 @@ void createHebrewInterlinear() {
 void _writeVerseLine(StringBuffer text, List<VerseWord> verseWords, int bookId, int chapter, int verse) {
   text.write('\n$bookId\t$chapter\t$verse\t');
   for (var word in verseWords) {
-    text.write('${word.hebrew} (${word.english})${word.punctuation}');
+    text.write('${word.hebrew} (${word.english})${word.punctuation} ');
   }
 }
 

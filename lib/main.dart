@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:iv_interlinear_kjv/screens/home/home_screen.dart';
 import 'package:iv_interlinear_kjv/services/database_helper.dart';
+import 'package:iv_interlinear_kjv/services/service_locator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await NtDatabaseHelper.instance.database;
-  await OtDatabaseHelper.instance.database;
+  setupServiceLocator();
+  await getIt<NtDatabaseHelper>().init();
+  await getIt<OtDatabaseHelper>().init();
   runApp(const MyApp());
 }
 

@@ -32,11 +32,7 @@ Future<Map<String, String>> _makeInterlinearMap() async {
   return map;
 }
 
-Future<void> _populateVersesForBook(
-  DatabaseHelper dbHelper,
-  int bookId,
-  Map<String, String> interlinear,
-) async {
+Future<void> _populateVersesForBook(DatabaseHelper dbHelper, int bookId, Map<String, String> interlinear) async {
   final inputFile = File('../original_docs/csv/$bookId.csv');
   final lines = await inputFile.readAsLines();
   // skip csv header so start at line 1
@@ -73,11 +69,14 @@ Future<void> _populateStrongsTable(DatabaseHelper dbHelper) async {
     final strongs = int.tryParse(columns[10].trim());
     if (strongs == null) continue;
     wordStrongsMap[hebrew] = strongs;
-    // print('heb: $hebrew, str: $strongs');
   }
   print('${wordStrongsMap.length} key-value pairs');
+  int counter = 0;
   for (var entry in wordStrongsMap.entries) {
-    print('${entry.key}: ${entry.value}');
+    if (counter % 5000 == 0) {
+      print('Processed $counter entries');
+    }
     dbHelper.insertStrongsNumber(hebrew: entry.key, strongsNumber: entry.value);
+    counter++;
   }
 }
