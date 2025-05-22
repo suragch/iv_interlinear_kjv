@@ -44,14 +44,22 @@ void createHebrewInterlinear() {
 
     final english = columns[colEnglish].trim();
     final punctuation = columns[colPunctuation].trim();
-    verseWords.add(VerseWord(hebrew: hebrew, english: english, punctuation: punctuation));
+    verseWords.add(
+      VerseWord(hebrew: hebrew, english: english, punctuation: punctuation),
+    );
   }
   final outputFile = File('../hebrew/interlinear.csv');
   outputFile.createSync(recursive: true);
   outputFile.writeAsStringSync(text.toString());
 }
 
-void _writeVerseLine(StringBuffer text, List<VerseWord> verseWords, int bookId, int chapter, int verse) {
+void _writeVerseLine(
+  StringBuffer text,
+  List<VerseWord> verseWords,
+  int bookId,
+  int chapter,
+  int verse,
+) {
   text.write('\n$bookId\t$chapter\t$verse\t');
   for (var word in verseWords) {
     text.write('${word.hebrew} (${word.english})${word.punctuation}');
@@ -144,7 +152,11 @@ const _fullNameToBookIdMap = {
 };
 
 class VerseWord {
-  VerseWord({required this.hebrew, required this.english, required this.punctuation});
+  VerseWord({
+    required this.hebrew,
+    required this.english,
+    required this.punctuation,
+  });
   final String hebrew;
   final String english;
   final String? punctuation;

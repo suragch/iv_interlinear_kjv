@@ -13,7 +13,11 @@ Future<void> convertOtHtmlToCsv() async {
   }
 }
 
-Future<void> _convertHtmlToCsv(String inputPath, String outputPath, int bookId) async {
+Future<void> _convertHtmlToCsv(
+  String inputPath,
+  String outputPath,
+  int bookId,
+) async {
   final inputFile = File(inputPath);
   final outputFile = File(outputPath);
 
@@ -26,7 +30,15 @@ Future<void> _convertHtmlToCsv(String inputPath, String outputPath, int bookId) 
   final document = parse(htmlContent);
 
   final List<List<dynamic>> csvData = [];
-  csvData.add(['bookId', 'IVchapterId', 'IVverseId', 'IVverseText', 'KJVchapterId', 'KJVverseId', 'KJVverseText']);
+  csvData.add([
+    'bookId',
+    'IVchapterId',
+    'IVverseId',
+    'IVverseText',
+    'KJVchapterId',
+    'KJVverseId',
+    'KJVverseText',
+  ]);
 
   final table = document.querySelector('table');
   if (table == null) {
@@ -49,7 +61,8 @@ Future<void> _convertHtmlToCsv(String inputPath, String outputPath, int bookId) 
       // For the provided HTML, this check should mostly pass for relevant rows.
       // If it's a row with just <br/>, _parseCellForSingleVerse will handle it.
       if (cells.isNotEmpty &&
-          (cells[0].text.trim().isNotEmpty || (cells.length > 2 && cells[2].text.trim().isNotEmpty))) {
+          (cells[0].text.trim().isNotEmpty ||
+              (cells.length > 2 && cells[2].text.trim().isNotEmpty))) {
         print(
           "Found row with less than 3 significant cells: ${row.innerHtml.substring(0, row.innerHtml.length > 80 ? 80 : row.innerHtml.length)}...",
         );
@@ -65,7 +78,10 @@ Future<void> _convertHtmlToCsv(String inputPath, String outputPath, int bookId) 
     ScriptureInfo kjvInfo = _parseCellForSingleVerse(kjvCell);
 
     // Only add row if there's some actual scripture data
-    if (ivInfo.chapterId != null || ivInfo.text!.isNotEmpty || kjvInfo.chapterId != null || kjvInfo.text!.isNotEmpty) {
+    if (ivInfo.chapterId != null ||
+        ivInfo.text!.isNotEmpty ||
+        kjvInfo.chapterId != null ||
+        kjvInfo.text!.isNotEmpty) {
       csvData.add([
         bookId,
         ivInfo.chapterId,
@@ -117,7 +133,9 @@ ScriptureInfo _parseCellForSingleVerse(Element? cell) {
 
   // Get all <p> tags or direct children if no <p>
   List<Node> nodesToProcess =
-      cell.querySelectorAll('p').isNotEmpty ? cell.querySelectorAll('p').toList() : cell.nodes.toList();
+      cell.querySelectorAll('p').isNotEmpty
+          ? cell.querySelectorAll('p').toList()
+          : cell.nodes.toList();
 
   bool cvFound = false;
 
@@ -125,7 +143,9 @@ ScriptureInfo _parseCellForSingleVerse(Element? cell) {
     var node = nodesToProcess[i];
     String currentBlockPlainText = _extractPlainTextContent(node).trim();
 
-    if (currentBlockPlainText.isEmpty || currentBlockPlainText.toLowerCase() == '<br>') continue;
+    if (currentBlockPlainText.isEmpty ||
+        currentBlockPlainText.toLowerCase() == '<br>')
+      continue;
 
     if (!cvFound) {
       // Try to find C:V only once, from the plain text of the first relevant block
@@ -134,7 +154,8 @@ ScriptureInfo _parseCellForSingleVerse(Element? cell) {
       if (cvMatch != null) {
         chapterId = cvMatch.group(1);
         verseId = cvMatch.group(2);
-        firstCvPrefixPlainText = "$chapterId:$verseId"; // Store the plain text C:V for cleanup
+        firstCvPrefixPlainText =
+            "$chapterId:$verseId"; // Store the plain text C:V for cleanup
         cvFound = true;
       }
     }
@@ -142,13 +163,22 @@ ScriptureInfo _parseCellForSingleVerse(Element? cell) {
     // Build rich text for the current node (e.g., <p> or direct text node)
     fullRichTextBuffer.write(_buildRichTextFromNode(node));
     if (i < nodesToProcess.length - 1 && currentBlockPlainText.isNotEmpty) {
-      fullRichTextBuffer.write(' '); // Add space between concatenated paragraph/node contents
+      fullRichTextBuffer.write(
+        ' ',
+      ); // Add space between concatenated paragraph/node contents
     }
   }
 
-  String finalRichText = _finalCsvCellCleanup(fullRichTextBuffer.toString(), firstCvPrefixPlainText);
+  String finalRichText = _finalCsvCellCleanup(
+    fullRichTextBuffer.toString(),
+    firstCvPrefixPlainText,
+  );
 
-  return ScriptureInfo(chapterId: chapterId, verseId: verseId, text: finalRichText);
+  return ScriptureInfo(
+    chapterId: chapterId,
+    verseId: verseId,
+    text: finalRichText,
+  );
 }
 
 // Extracts plain text content from a node, normalizing whitespace.
@@ -161,7 +191,8 @@ String _extractPlainTextContent(Node node) {
 // Builds the rich text string from a single top-level node (like a <p> or a text node)
 String _buildRichTextFromNode(Node node) {
   if (node is Text) {
-    return node.text; // Keep original spacing for now, _finalCsvCellCleanup will handle it
+    return node
+        .text; // Keep original spacing for now, _finalCsvCellCleanup will handle it
   }
   if (node is Element) {
     return _buildRichTextFromNodeListRecursive(node.nodes.toList());
@@ -178,15 +209,21 @@ String _buildRichTextFromNodeListRecursive(List<Node> nodes) {
     } else if (node is Element) {
       String localName = node.localName!.toLowerCase();
       if (localName == 'b' || localName == 'strong') {
-        String innerBoldText = _buildRichTextFromNodeListRecursive(node.nodes.toList());
+        String innerBoldText = _buildRichTextFromNodeListRecursive(
+          node.nodes.toList(),
+        );
         // Avoid creating empty <b></b> or <b> </b> if content is just space after recursion
         if (innerBoldText.trim().isNotEmpty) {
           sb.write('<b>$innerBoldText</b>');
         } else {
-          sb.write(innerBoldText); // Append if it's just whitespace, to be trimmed later
+          sb.write(
+            innerBoldText,
+          ); // Append if it's just whitespace, to be trimmed later
         }
       } else if (localName == 'u') {
-        sb.write(_buildRichTextFromNodeListRecursive(node.nodes.toList())); // Discard <u> but process children
+        sb.write(
+          _buildRichTextFromNodeListRecursive(node.nodes.toList()),
+        ); // Discard <u> but process children
       } else if (localName == 'br') {
         sb.write(' '); // Treat <br> as a space for concatenation
       }
@@ -211,7 +248,8 @@ String _finalCsvCellCleanup(String rawRichText, String? plainCvPrefixToRemove) {
     // Remove the plain text C:V prefix only if it's at the absolute beginning,
     // potentially followed by a space. This is less aggressive.
     String prefixWithSpace = plainCvPrefixToRemove + " ";
-    String trimmedTextStart = text.trimLeft(); // Look at the start after trimming leading whitespace
+    String trimmedTextStart =
+        text.trimLeft(); // Look at the start after trimming leading whitespace
 
     if (trimmedTextStart.startsWith(prefixWithSpace)) {
       // Find the actual start of the prefix in the *untrimmed* text to remove correctly
@@ -223,7 +261,9 @@ String _finalCsvCellCleanup(String rawRichText, String? plainCvPrefixToRemove) {
     } else if (trimmedTextStart.startsWith(plainCvPrefixToRemove)) {
       int actualPrefixStartIndex = text.indexOf(plainCvPrefixToRemove);
       if (actualPrefixStartIndex != -1) {
-        text = text.substring(actualPrefixStartIndex + plainCvPrefixToRemove.length);
+        text = text.substring(
+          actualPrefixStartIndex + plainCvPrefixToRemove.length,
+        );
       }
     }
   }
@@ -231,7 +271,8 @@ String _finalCsvCellCleanup(String rawRichText, String? plainCvPrefixToRemove) {
   // Normalize multiple spaces (including those from <br>) and newlines to a single space
   text = text.replaceAll(RegExp(r'\s+'), ' ').trim();
   // Remove empty bold tags or bold tags with only space
-  text = text.replaceAll(RegExp(r'<b>\s*</b>', caseSensitive: false), '').trim();
+  text =
+      text.replaceAll(RegExp(r'<b>\s*</b>', caseSensitive: false), '').trim();
   // Normalize spaces again after potential tag removal and trim final result
   text = text.replaceAll(RegExp(r'\s{2,}', caseSensitive: false), ' ').trim();
 

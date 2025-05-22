@@ -43,7 +43,10 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.info_outline),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const HelpScreen()));
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HelpScreen()),
+              );
             },
           ),
         ],
@@ -60,7 +63,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: Text(Book.otBookNames[index]),
                       onTap: () {
                         final bookId = Book.firstOtBook + index;
-                        final chaptersForBook = Book.getNumberOfChapters(bookId);
+                        final chaptersForBook = Book.getNumberOfChapters(
+                          bookId,
+                        );
                         _chapterNotifier.value = (bookId, chaptersForBook);
                       },
                     );
@@ -75,7 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: Text(Book.ntBookNames[index]),
                       onTap: () {
                         final bookId = Book.firstNtBook + index;
-                        final chaptersForBook = Book.getNumberOfChapters(bookId);
+                        final chaptersForBook = Book.getNumberOfChapters(
+                          bookId,
+                        );
                         _chapterNotifier.value = (bookId, chaptersForBook);
                       },
                     );
@@ -112,7 +119,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     version,
                     style: TextStyle(
                       fontSize: 8.0,
-                      color: Theme.of(context).textTheme.bodyLarge?.color?.withValues(alpha: 0.6),
+                      color: Theme.of(
+                        context,
+                      ).textTheme.bodyLarge?.color?.withValues(alpha: 0.6),
                     ),
                   ),
                 ),
@@ -156,7 +165,10 @@ class Homepage extends StatelessWidget {
   }
 
   void _navigateToHelpScreen(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const HelpScreen()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const HelpScreen()),
+    );
   }
 }
 
@@ -209,7 +221,10 @@ class _HomepageBodyState extends State<HomepageBody> {
   Widget _narrowMainLayout(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[_optionControls(), _compareButton()]),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[_optionControls(), _compareButton()],
+        ),
         Align(alignment: Alignment.bottomLeft, child: _copyrightInfo()),
         Align(alignment: Alignment.bottomRight, child: _appVersionInfo()),
       ],
@@ -222,7 +237,10 @@ class _HomepageBodyState extends State<HomepageBody> {
         _optionControls(),
         Align(
           alignment: Alignment.topRight,
-          child: Padding(padding: const EdgeInsets.symmetric(vertical: 16.0), child: _compareButton()),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: _compareButton(),
+          ),
         ),
         Align(alignment: Alignment.bottomRight, child: _copyrightInfo()),
         Align(alignment: Alignment.topRight, child: _appVersionInfo()),
@@ -379,7 +397,10 @@ class _HomepageBodyState extends State<HomepageBody> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: const Text("Choose a chapter"),
-      content: SizedBox(width: MediaQuery.of(context).size.width * 0.7, child: content),
+      content: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.7,
+        child: content,
+      ),
     );
 
     // show the dialog

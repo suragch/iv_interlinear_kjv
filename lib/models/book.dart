@@ -67,7 +67,7 @@ class Book {
     3,
     2,
     14,
-    4
+    4,
   ];
   static const _ntChaptersPerBook = [
     28,
@@ -96,7 +96,7 @@ class Book {
     1,
     1,
     1,
-    22
+    22,
   ];
 
   static const otBookNames = [
@@ -138,7 +138,7 @@ class Book {
     "Zephaniah",
     "Haggai",
     "Zechariah",
-    "Malachi"
+    "Malachi",
   ];
 
   static const ntBookNames = [
@@ -168,7 +168,7 @@ class Book {
     "2 John",
     "3 John",
     "Jude",
-    "Revelation"
+    "Revelation",
   ];
 
   static String getBookName(int bookId) {
@@ -198,7 +198,11 @@ class Book {
   }
 
   static bool isSingleChapterBook(int bookId) {
-    return bookId == obadiah || bookId == philemon || bookId == iiJohn || bookId == iiiJohn || bookId == jude;
+    return bookId == obadiah ||
+        bookId == philemon ||
+        bookId == iiJohn ||
+        bookId == iiiJohn ||
+        bookId == jude;
   }
 
   static List<String> getBookList() {

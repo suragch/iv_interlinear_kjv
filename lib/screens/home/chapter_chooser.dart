@@ -33,7 +33,10 @@ class ChapterChooser extends LeafRenderObjectWidget {
   }
 
   @override
-  void updateRenderObject(BuildContext context, covariant RenderObject renderObject) {
+  void updateRenderObject(
+    BuildContext context,
+    covariant RenderObject renderObject,
+  ) {
     final theme = Theme.of(context);
     (renderObject as _RenderChapterChooser)
       ..chapterCount = chapterCount
@@ -61,13 +64,13 @@ class _RenderChapterChooser extends RenderBox {
     required Color gridHighlightColor,
     required Color textColor,
     required Color highlightTextColor,
-  })  : _chapterCount = chapterCount,
-        _onChapterSelected = onChapterSelected,
-        _textStyle = textStyle,
-        _gridColor = gridColor,
-        _gridHighlightColor = gridHighlightColor,
-        _textColor = textColor,
-        _highlightTextColor = highlightTextColor {
+  }) : _chapterCount = chapterCount,
+       _onChapterSelected = onChapterSelected,
+       _textStyle = textStyle,
+       _gridColor = gridColor,
+       _gridHighlightColor = gridHighlightColor,
+       _textColor = textColor,
+       _highlightTextColor = highlightTextColor {
     _gridPaint.color = gridColor;
     _highlightPaint.color = gridHighlightColor;
   }
@@ -183,7 +186,8 @@ class _RenderChapterChooser extends RenderBox {
       );
       textPainter.layout();
 
-      if (textPainter.width <= _tileSize.width && textPainter.height <= _tileSize.height) {
+      if (textPainter.width <= _tileSize.width &&
+          textPainter.height <= _tileSize.height) {
         break;
       }
 
@@ -309,10 +313,7 @@ class _RenderChapterChooser extends RenderBox {
   void _paintChapter(PaintingContext context, int row, int col, int index) {
     final canvas = context.canvas;
     canvas.save();
-    canvas.translate(
-      col * _tileSize.width,
-      row * _tileSize.height,
-    );
+    canvas.translate(col * _tileSize.width, row * _tileSize.height);
 
     if (_highlightedChapter == index) {
       _paintHighlight(context, index);
@@ -325,7 +326,10 @@ class _RenderChapterChooser extends RenderBox {
   void _paintHighlight(PaintingContext context, int index) {
     final canvas = context.canvas;
     canvas.drawRRect(
-      RRect.fromRectAndRadius(Offset.zero & _tileSize, const Radius.circular(4)),
+      RRect.fromRectAndRadius(
+        Offset.zero & _tileSize,
+        const Radius.circular(4),
+      ),
       _highlightPaint,
     );
 
@@ -361,7 +365,9 @@ class _RenderChapterChooser extends RenderBox {
       context.canvas,
       Offset(
         (-_tileSize.width / 2) + (offsetTileSize.width - textPainter.width) / 2,
-        -verticalOffset - _tileSize.height / 2 + (offsetTileSize.height - textPainter.height) / 2,
+        -verticalOffset -
+            _tileSize.height / 2 +
+            (offsetTileSize.height - textPainter.height) / 2,
       ),
     );
   }
@@ -381,7 +387,11 @@ class _RenderChapterChooser extends RenderBox {
     );
   }
 
-  TextPainter _createTextPainter(String text, {Color? color, double? fontSize}) {
+  TextPainter _createTextPainter(
+    String text, {
+    Color? color,
+    double? fontSize,
+  }) {
     final textPainter = TextPainter(
       text: TextSpan(
         text: text,

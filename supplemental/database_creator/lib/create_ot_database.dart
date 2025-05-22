@@ -32,7 +32,11 @@ Future<Map<String, String>> _makeInterlinearMap() async {
   return map;
 }
 
-Future<void> _populateVersesForBook(DatabaseHelper dbHelper, int bookId, Map<String, String> interlinear) async {
+Future<void> _populateVersesForBook(
+  DatabaseHelper dbHelper,
+  int bookId,
+  Map<String, String> interlinear,
+) async {
   final inputFile = File('../original_docs/csv/$bookId.csv');
   final lines = await inputFile.readAsLines();
   // skip csv header so start at line 1

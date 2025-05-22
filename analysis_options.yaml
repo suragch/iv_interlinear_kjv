@@ -4,3 +4,6 @@ analyzer:
   language:
     strict-casts: true
     strict-raw-types: true
+
+formatter:
+  page_width: 80

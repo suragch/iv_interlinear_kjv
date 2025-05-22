@@ -51,11 +51,23 @@ class DatabaseHelper {
         ${Schema.colOriginal}
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       ''',
-      [bookId, ivChapter, ivVerse, ivText, kjvChapter, kjvVerse, kjvText, originalText],
+      [
+        bookId,
+        ivChapter,
+        ivVerse,
+        ivText,
+        kjvChapter,
+        kjvVerse,
+        kjvText,
+        originalText,
+      ],
     );
   }
 
-  void insertStrongsNumber({required String hebrew, required int strongsNumber}) {
+  void insertStrongsNumber({
+    required String hebrew,
+    required int strongsNumber,
+  }) {
     _database.execute(
       '''
       INSERT INTO ${Schema.strongsTable} (

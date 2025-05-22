@@ -46,9 +46,17 @@ class CompareScreenState extends State<CompareScreen> {
             itemCount: verses.length,
             itemBuilder: (context, index) {
               if (orientation == Orientation.portrait) {
-                return NarrowVerseListTile(verses: verses, index: index, isOT: isOT);
+                return NarrowVerseListTile(
+                  verses: verses,
+                  index: index,
+                  isOT: isOT,
+                );
               } else {
-                return WideVerseListTile(verses: verses, index: index, isOT: isOT);
+                return WideVerseListTile(
+                  verses: verses,
+                  index: index,
+                  isOT: isOT,
+                );
               }
             },
           );

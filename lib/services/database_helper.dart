@@ -33,7 +33,8 @@ class OtDatabaseHelper {
   static const String _databaseName = "ot.db";
 
   OtDatabaseHelper._privateConstructor();
-  static final OtDatabaseHelper instance = OtDatabaseHelper._privateConstructor();
+  static final OtDatabaseHelper instance =
+      OtDatabaseHelper._privateConstructor();
 
   static Database? _database;
   Future<Database> get database async {
@@ -61,8 +62,13 @@ class OtDatabaseHelper {
       }
 
       // Copy from asset
-      ByteData data = await rootBundle.load(join(_databaseFolder, _databaseName));
-      List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      ByteData data = await rootBundle.load(
+        join(_databaseFolder, _databaseName),
+      );
+      List<int> bytes = data.buffer.asUint8List(
+        data.offsetInBytes,
+        data.lengthInBytes,
+      );
       await File(path).writeAsBytes(bytes);
 
       // open the database
@@ -95,7 +101,8 @@ class OtDatabaseHelper {
       keyKjvVerseText,
       keyOriginalVerseText,
     ];
-    String whereString = '$keyBookId =? AND ($keyIvChapterId =? OR $keyKjvChapterId =?)';
+    String whereString =
+        '$keyBookId =? AND ($keyIvChapterId =? OR $keyKjvChapterId =?)';
     List<dynamic> whereArguments = [bookId, chapter, chapter];
     final results = await db.query(
       _tableVerses,
@@ -166,7 +173,8 @@ class NtDatabaseHelper {
   static const String _databaseName = "text.db";
 
   NtDatabaseHelper._privateConstructor();
-  static final NtDatabaseHelper instance = NtDatabaseHelper._privateConstructor();
+  static final NtDatabaseHelper instance =
+      NtDatabaseHelper._privateConstructor();
 
   static Database? _database;
   Future<Database> get database async {
@@ -194,8 +202,13 @@ class NtDatabaseHelper {
       }
 
       // Copy from asset
-      ByteData data = await rootBundle.load(join(_databaseFolder, _databaseName));
-      List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      ByteData data = await rootBundle.load(
+        join(_databaseFolder, _databaseName),
+      );
+      List<int> bytes = data.buffer.asUint8List(
+        data.offsetInBytes,
+        data.lengthInBytes,
+      );
       await File(path).writeAsBytes(bytes);
 
       // open the database
@@ -211,11 +224,17 @@ class NtDatabaseHelper {
 
   // Helper methods
 
-  Future<List<VersesRow>> getChapter(bool isInspiredVersion, int bookId, int chapter) async {
+  Future<List<VersesRow>> getChapter(
+    bool isInspiredVersion,
+    int bookId,
+    int chapter,
+  ) async {
     Database db = await database;
 
     List<String> columnsToSelect = [keyId];
-    String chapterColumn = (isInspiredVersion) ? keyIvChapterId : keyKjvChapterId;
+    String chapterColumn = (isInspiredVersion)
+        ? keyIvChapterId
+        : keyKjvChapterId;
     String sortOrder = (isInspiredVersion)
         ? '$keyIvChapterId ASC, $keyIvVerseId ASC'
         : '$keyKjvChapterId ASC, $keyKjvVerseId ASC';
@@ -235,7 +254,11 @@ class NtDatabaseHelper {
     return _getIdRange(db, startId, endId);
   }
 
-  Future<List<VersesRow>> _getIdRange(Database db, int startId, int endId) async {
+  Future<List<VersesRow>> _getIdRange(
+    Database db,
+    int startId,
+    int endId,
+  ) async {
     List<String> columnsToSelect = [
       keyBookId,
       keyIvChapterId,

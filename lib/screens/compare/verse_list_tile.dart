@@ -8,7 +8,12 @@ class NarrowVerseListTile extends StatelessWidget {
   final List<VersesRow> verses;
   final bool isOT;
 
-  const NarrowVerseListTile({super.key, required this.index, required this.verses, required this.isOT});
+  const NarrowVerseListTile({
+    super.key,
+    required this.index,
+    required this.verses,
+    required this.isOT,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,25 +24,47 @@ class NarrowVerseListTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(padding: const EdgeInsets.all(10.0), child: Text(_ivTitle(verses[index]))),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(_ivTitle(verses[index])),
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 32.0, right: 10.0),
               child: RichText(
-                text: TextSpan(style: DefaultTextStyle.of(context).style, children: _ivText(verses[index])),
+                text: TextSpan(
+                  style: DefaultTextStyle.of(context).style,
+                  children: _ivText(verses[index]),
+                ),
               ),
             ),
-            Padding(padding: const EdgeInsets.all(10.0), child: Text(_originalTitle(verses[index]))),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(_originalTitle(verses[index])),
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 32.0, right: 10.0),
               child: RichText(
-                text: TextSpan(style: DefaultTextStyle.of(context).style, children: _originalText(verses[index], isOT)),
+                text: TextSpan(
+                  style: DefaultTextStyle.of(context).style,
+                  children: _originalText(verses[index], isOT),
+                ),
               ),
             ),
-            Padding(padding: const EdgeInsets.all(10.0), child: Text(_kjvTitle(verses[index]))),
             Padding(
-              padding: const EdgeInsets.only(left: 32.0, right: 10.0, bottom: 10.0),
+              padding: const EdgeInsets.all(10.0),
+              child: Text(_kjvTitle(verses[index])),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 32.0,
+                right: 10.0,
+                bottom: 10.0,
+              ),
               child: RichText(
-                text: TextSpan(style: DefaultTextStyle.of(context).style, children: _kjvText(verses[index])),
+                text: TextSpan(
+                  style: DefaultTextStyle.of(context).style,
+                  children: _kjvText(verses[index]),
+                ),
               ),
             ),
           ],
@@ -52,7 +79,12 @@ class WideVerseListTile extends StatelessWidget {
   final List<VersesRow> verses;
   final bool isOT;
 
-  const WideVerseListTile({super.key, required this.index, required this.verses, required this.isOT});
+  const WideVerseListTile({
+    super.key,
+    required this.index,
+    required this.verses,
+    required this.isOT,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +94,11 @@ class WideVerseListTile extends StatelessWidget {
         elevation: 4.0,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[_inspiredVersion(context), _greek(context), _kingJamesVersion(context)],
+          children: <Widget>[
+            _inspiredVersion(context),
+            _original(context),
+            _kingJamesVersion(context),
+          ],
         ),
       ),
     );
@@ -73,11 +109,21 @@ class WideVerseListTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(padding: const EdgeInsets.all(10.0), child: Text(_ivTitle(verses[index]))),
           Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
+            padding: const EdgeInsets.all(10.0),
+            child: Text(_ivTitle(verses[index])),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20.0,
+              right: 10.0,
+              bottom: 10.0,
+            ),
             child: RichText(
-              text: TextSpan(style: DefaultTextStyle.of(context).style, children: _ivText(verses[index])),
+              text: TextSpan(
+                style: DefaultTextStyle.of(context).style,
+                children: _ivText(verses[index]),
+              ),
             ),
           ),
         ],
@@ -85,16 +131,26 @@ class WideVerseListTile extends StatelessWidget {
     );
   }
 
-  Widget _greek(BuildContext context) {
+  Widget _original(BuildContext context) {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(padding: const EdgeInsets.all(10.0), child: Text(_originalTitle(verses[index]))),
           Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
+            padding: const EdgeInsets.all(10.0),
+            child: Text(_originalTitle(verses[index])),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20.0,
+              right: 10.0,
+              bottom: 10.0,
+            ),
             child: RichText(
-              text: TextSpan(style: DefaultTextStyle.of(context).style, children: _originalText(verses[index], isOT)),
+              text: TextSpan(
+                style: DefaultTextStyle.of(context).style,
+                children: _originalText(verses[index], isOT),
+              ),
             ),
           ),
         ],
@@ -107,11 +163,21 @@ class WideVerseListTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(padding: const EdgeInsets.all(10.0), child: Text(_kjvTitle(verses[index]))),
           Padding(
-            padding: const EdgeInsets.only(left: 20.0, right: 10.0, bottom: 10.0),
+            padding: const EdgeInsets.all(10.0),
+            child: Text(_kjvTitle(verses[index])),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 20.0,
+              right: 10.0,
+              bottom: 10.0,
+            ),
             child: RichText(
-              text: TextSpan(style: DefaultTextStyle.of(context).style, children: _kjvText(verses[index])),
+              text: TextSpan(
+                style: DefaultTextStyle.of(context).style,
+                children: _kjvText(verses[index]),
+              ),
             ),
           ),
         ],
@@ -172,7 +238,11 @@ List<TextSpan> _originalText(VersesRow? row, bool isOT) {
           ..onTap = () {
             _openWordInBrowser(isOT, spanText);
           },
-        style: const TextStyle(color: Colors.blue, decoration: TextDecoration.underline, decorationColor: Colors.blue),
+        style: const TextStyle(
+          color: Colors.blue,
+          decoration: TextDecoration.underline,
+          decorationColor: Colors.blue,
+        ),
       ),
     );
 
@@ -229,11 +299,17 @@ const _greekExtendedMax = 0x1fff;
 
 bool _isGreek(String char) {
   final c = char.codeUnitAt(0);
-  return ((c >= _greekMin && c <= _greekMax) || (c >= _greekExtendedMin && c <= _greekExtendedMax));
+  return ((c >= _greekMin && c <= _greekMax) ||
+      (c >= _greekExtendedMin && c <= _greekExtendedMax));
 }
 
 String _kjvTitle(VersesRow row) {
-  return _title('King James Version', row.kjvText, row.kjvChapter, row.kjvVerse);
+  return _title(
+    'King James Version',
+    row.kjvText,
+    row.kjvChapter,
+    row.kjvVerse,
+  );
 }
 
 List<TextSpan> _kjvText(VersesRow row) {
@@ -270,7 +346,10 @@ List<TextSpan> _text(String? verseText) {
     spans.add(
       TextSpan(
         text: verseText.substring(startIndex, endIndex),
-        style: const TextStyle(fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          decoration: TextDecoration.underline,
+        ),
       ),
     );
 
