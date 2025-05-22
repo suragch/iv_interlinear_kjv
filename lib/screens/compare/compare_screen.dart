@@ -56,7 +56,7 @@ class CompareScreenState extends State<CompareScreen> {
   }
 
   Future<List<VersesRow>> _loadVersesFromDatabase() async {
-    final helper = DatabaseHelper.instance;
+    final helper = NtDatabaseHelper.instance;
     return await helper.getChapter(
       true, // TODO: return all verses
       widget.bookId,

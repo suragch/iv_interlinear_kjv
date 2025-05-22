@@ -5,7 +5,8 @@ import 'package:iv_interlinear_kjv/services/database_helper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await DatabaseHelper.instance.database;
+  await NtDatabaseHelper.instance.database;
+  await OtDatabaseHelper.instance.database;
   runApp(const MyApp());
 }
 
@@ -16,9 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorSchemeSeed: Colors.green,
-      ),
+      theme: ThemeData(colorSchemeSeed: Colors.green),
       title: 'IV Interlinear KJV',
       home: const HomeScreen(),
     );
