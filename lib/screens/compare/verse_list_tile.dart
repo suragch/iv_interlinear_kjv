@@ -218,8 +218,8 @@ List<TextSpan> _originalText(VersesRow? row, bool isOT) {
   int breakIndex = 0;
 
   do {
-    startIndex = _indexOfGreekStart(text, breakIndex);
-    endIndex = _indexOfGreekEnd(text, startIndex);
+    startIndex = _indexOfOriginalStart(text, breakIndex);
+    endIndex = _indexOfOriginalEnd(text, startIndex);
 
     if (startIndex == -1 || endIndex == -1) {
       spans.add(TextSpan(text: text.substring(breakIndex)));
@@ -252,19 +252,19 @@ List<TextSpan> _originalText(VersesRow? row, bool isOT) {
   return spans;
 }
 
-int _indexOfGreekStart(String text, int fromIndex) {
+int _indexOfOriginalStart(String text, int fromIndex) {
   for (int i = fromIndex; i < text.length; i++) {
-    if (_isGreek(text[i])) {
+    if (isOriginal(text.codeUnitAt(i))) {
       return i;
     }
   }
   return -1;
 }
 
-int _indexOfGreekEnd(String text, int fromIndex) {
+int _indexOfOriginalEnd(String text, int fromIndex) {
   if (fromIndex < 0) return -1;
   for (int i = fromIndex; i < text.length; i++) {
-    if (!_isGreek(text[i])) {
+    if (!isOriginal(text.codeUnitAt(i))) {
       return i;
     }
   }
@@ -297,10 +297,17 @@ const _greekMax = 0x03ff;
 const _greekExtendedMin = 0x1f00;
 const _greekExtendedMax = 0x1fff;
 
-bool _isGreek(String char) {
-  final c = char.codeUnitAt(0);
+bool isOriginal(int char) {
+  return _isHebrew(char) || _isGreek(char);
+}
+
+bool _isGreek(int c) {
   return ((c >= _greekMin && c <= _greekMax) ||
       (c >= _greekExtendedMin && c <= _greekExtendedMax));
+}
+
+bool _isHebrew(int c) {
+  return c == 0x200d || (c >= 0x0590 && c <= 0x05FF);
 }
 
 String _kjvTitle(VersesRow row) {
